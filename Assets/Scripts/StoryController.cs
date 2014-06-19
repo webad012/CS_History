@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
+/*[System.Serializable]
 public class StorySpecificObjects
 {
     public GameObject ObjectToPlayWith;
     public Vector2[] requiredResultRanges;
-}
+    public Material backgroundMaterial;
+    public int knowledgeGain;
+}*/
 
 public class StoryController : MonoBehaviour 
 {
     public UILabel scoreLabel;
     public UILabel scoreRequiredLabel;
     public UILabel storyLabel;
-    public StorySpecificObjects[] storySpec;
+    //public StorySpecificObjects[] storySpec;
+    public GameObject background;
+    public GameObject continueButton;
+    public UILabel continueLabel;
+    public UILabel knowledgeGainLabel;
+    public UILabel coinsGainLabel;
 
     private int score = 0;
     private int scoreRequired = 0;
@@ -26,14 +33,23 @@ public class StoryController : MonoBehaviour
     private int currentRequiredResult;
     private GameObject PlayObject;
 
+    //private TowersController towersControllerScript;
+    private MiniGameData miniGameData;
+
 	void Start () 
     {
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
+        miniGameData = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData[levelSelected].miniGameData;
+
+        continueButton.SetActive(false);
+        score = 0;
         storyTexts = StaticTexts.Instance.storyTexts[levelSelected];
         storyIndex = 0;
         currentRequiredResult = 0;
         scoreLabel.text = "";
         scoreRequiredLabel.text = "";
+        //background.renderer.material = storySpec [levelSelected].backgroundMaterial;
+        background.renderer.material = miniGameData.backgroundMaterial;
         UpdateGui();
 	}
 	
@@ -48,10 +64,33 @@ public class StoryController : MonoBehaviour
         {
             if(minigameFinished)
             {
-                Application.LoadLevel("MainGame");
+                int playerKnowledge = PlayerPrefs.GetInt("PlayerKnowledge", 0);
+                int playerCoins = PlayerPrefs.GetInt("PlayerCoins", 0);
+                //playerKnowledge += storySpec [levelSelected].knowledgeGain;
+                playerKnowledge += miniGameData.knowledgeGain;
+                playerCoins += miniGameData.coinsGain;
+                PlayerPrefs.SetInt("PlayerKnowledge", playerKnowledge);
+                PlayerPrefs.SetInt("lastUnlockedStory", levelSelected);
+
+                continueButton.SetActive(true);
+                //continueLabel.text = "You gained " + storySpec [levelSelected].knowledgeGain + " knowdledge\nClick to continue";
+                //continueLabel.text = "You gained " + miniGameData.knowledgeGain + " knowdledge\nClick to continue";
+                knowledgeGainLabel.text = miniGameData.knowledgeGain.ToString();
+                coinsGainLabel.text = miniGameData.coinsGain.ToString();
+                continueLabel.text = "Click to continue";
             }
 
-            scoreLabel.text = "Score: " + score.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+            string score_string;
+            if(score > 0)
+            {
+                score_string = score.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                score_string = score.ToString();
+            }
+
+            scoreLabel.text = "Score: " + score_string;
             scoreRequiredLabel.text = "Score Required: " + scoreRequired.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
         } else
         {
@@ -67,7 +106,8 @@ public class StoryController : MonoBehaviour
         {
             currentRequiredResult++;
 
-            if(currentRequiredResult == storySpec[levelSelected].requiredResultRanges.Length)
+            //if(currentRequiredResult == storySpec[levelSelected].requiredResultRanges.Length)
+            if(currentRequiredResult == miniGameData.requiredResultRanges.Length)
             {
                 minigameFinished = true;
             }
@@ -86,12 +126,16 @@ public class StoryController : MonoBehaviour
         if (storyIndex >= storyTexts.Length)
         {
             go.SetActive(false);
-            //Instantiate(storySpec[levelSelected].ObjectToPlayWith, new Vector3(0f, 0f, 0f), Quaternion.identity);
             minigameStarted = true;
             ResetMinigame();
         }
 
         UpdateGui();
+    }
+
+    public void ContinueButtonClicked()
+    {
+        Application.LoadLevel("TowerDefense");
     }
 
     void ResetMinigame()
@@ -102,9 +146,12 @@ public class StoryController : MonoBehaviour
         }
 
         score = 0;
-        scoreRequired = (int)Random.Range(storySpec[levelSelected].requiredResultRanges[currentRequiredResult].x,
-                                          storySpec[levelSelected].requiredResultRanges[currentRequiredResult].y);
-        PlayObject = (GameObject)Instantiate(storySpec[levelSelected].ObjectToPlayWith, 
+        //scoreRequired = (int)Random.Range(storySpec[levelSelected].requiredResultRanges[currentRequiredResult].x,
+        //                                  storySpec[levelSelected].requiredResultRanges[currentRequiredResult].y);
+        scoreRequired = (int)Random.Range(miniGameData.requiredResultRanges[currentRequiredResult].x,
+                                          miniGameData.requiredResultRanges[currentRequiredResult].y);
+        //PlayObject = (GameObject)Instantiate(storySpec[levelSelected].ObjectToPlayWith, 
+        PlayObject = (GameObject)Instantiate(miniGameData.ObjectToPlayWith, 
                                              new Vector3(0f, 0f, 0f), Quaternion.identity);
     }
 }

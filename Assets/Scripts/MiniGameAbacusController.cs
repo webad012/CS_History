@@ -2,31 +2,19 @@
 using System.Collections;
 using System;
 
-/*[System.Serializable]
-public class Pipe
-{
-    public GameObject ones_1;
-    public GameObject ones_2;
-    public GameObject ones_3;
-    public GameObject ones_4;
-    public GameObject ones_5;
-    public GameObject fives_1;
-    public GameObject fives_2;
-}*/
-
 public class MiniGameAbacusController : MonoBehaviour 
 {
-    public float tweenSpeed = 0.5f;
+    /*public float tweenSpeed = 0.5f;
 
     private float onesTweenX = 0.13f;
-    private float fivesTweenX = -0.12f;
+    private float fivesTweenX = -0.12f;*/
 
-    private StoryController sc;
+    //private StoryController sc;
 
 	// Use this for initialization
 	void Start () 
     {
-        sc = GameObject.Find("StoryController").GetComponent<StoryController>();
+        //sc = GameObject.Find("StoryController").GetComponent<StoryController>();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +22,7 @@ public class MiniGameAbacusController : MonoBehaviour
 	
 	}
 
-    public void BallSelected(GameObject go)
+    /*public void BallSelected(GameObject go)
     {
         string pipe_num = go.transform.parent.transform.parent.name.Substring(5);
         string ball_num_string = go.transform.name.Substring(4);
@@ -98,5 +86,5 @@ public class MiniGameAbacusController : MonoBehaviour
             bc.isSelected = true;
             sc.AddToScore(toAdd);
         }
-    }
+    }*/
 }

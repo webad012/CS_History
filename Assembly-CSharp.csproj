@@ -167,7 +167,8 @@
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UIViewport.cs" />
      <Compile Include="Assets\Scripts\BallController.cs" />
-     <Compile Include="Assets\Scripts\LevelsController.cs" />
+     <Compile Include="Assets\Scripts\FirstScene\GameDataController.cs" />
+     <Compile Include="Assets\Scripts\LevelsSelectorController.cs" />
      <Compile Include="Assets\Scripts\MainGame\BuildPanel.cs" />
      <Compile Include="Assets\Scripts\MainGame\CatapultProjectile.cs" />
      <Compile Include="Assets\Scripts\MainGame\Death.cs" />
@@ -185,7 +186,9 @@
      <Compile Include="Assets\Scripts\MainGame\TileTaken.cs" />
      <Compile Include="Assets\Scripts\MainGame\TowerBase.cs" />
      <Compile Include="Assets\Scripts\MainGame\WaveManager.cs" />
+     <Compile Include="Assets\Scripts\MainMenuController.cs" />
      <Compile Include="Assets\Scripts\MiniGameAbacusController.cs" />
+     <Compile Include="Assets\Scripts\OptionsController.cs" />
      <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
      <Compile Include="Assets\Scripts\StaticTexts.cs" />
      <Compile Include="Assets\Scripts\StoryController.cs" />
