@@ -192,6 +192,7 @@
      <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
      <Compile Include="Assets\Scripts\StaticTexts.cs" />
      <Compile Include="Assets\Scripts\StoryController.cs" />
+     <Compile Include="Assets\Scripts\UpgradeController.cs" />
      <None Include="Assets\NGUI270Revive\Resources\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI270Revive\Examples\Models\Orc\Orc Skin.shader" />
      <None Include="Assets\NGUI270Revive\Examples\Atlases\Wooden\Arimo20.txt" />

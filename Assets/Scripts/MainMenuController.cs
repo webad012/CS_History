@@ -67,6 +67,7 @@ public class MainMenuController : MonoBehaviour
 
     void UpgradeSelected()
     {
+        Application.LoadLevel("Upgrade");
     }
     
     void OptionsSelected()
