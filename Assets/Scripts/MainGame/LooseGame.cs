@@ -3,17 +3,17 @@ using System.Collections;
 
 public class LooseGame : MonoBehaviour 
 {
-    public bool lost = false;
-    private int initMoney;
-    private Money moneyScript;
-    private WaveManager waveManagerScript;
+    /*public bool lost = false;
+    //private int initMoney;
+    //private Money moneyScript;
+    //private WaveManager waveManagerScript;
 
 	// Use this for initialization
 	void Start () 
     {
-        moneyScript = gameObject.GetComponent<Money>();
-        waveManagerScript = gameObject.GetComponent<WaveManager>();
-        initMoney = moneyScript.money;
+        //moneyScript = gameObject.GetComponent<Money>();
+        //waveManagerScript = gameObject.GetComponent<WaveManager>();
+        //initMoney = moneyScript.money;
 	}
 	
 	// Update is called once per frame
@@ -22,7 +22,7 @@ public class LooseGame : MonoBehaviour
 	    if (lost)
         {
             lost = false;
-            waveManagerScript.resetCD();
+            //waveManagerScript.resetCD();
 
             GameObject[] towers = GameObject.FindGameObjectsWithTag("Tower");
             for(int i=0; i<towers.Length; i++)
@@ -45,4 +45,5 @@ public class LooseGame : MonoBehaviour
             moneyScript.money = initMoney;
         }
 	}
+ */   
 }

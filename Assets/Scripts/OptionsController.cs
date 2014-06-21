@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OptionsController : MonoBehaviour {
+public class OptionsController : MonoBehaviour 
+{
+    private GameDataController gameDataControllerScript;
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start () 
+    {
+        gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 	}
 	
 	// Update is called once per frame
@@ -21,5 +24,6 @@ public class OptionsController : MonoBehaviour {
     public void SelectedReset()
     {
         PlayerPrefs.DeleteAll();
+        gameDataControllerScript.InitializeTowers();
     }
 }

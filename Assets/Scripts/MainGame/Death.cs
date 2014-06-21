@@ -5,14 +5,14 @@ public class Death : MonoBehaviour
 {
 	private bool isTower = false;
 	private Health hscr;
-	private Money mscr;
+	//private Money mscr;
 	private EnemyStats esscr;
 
 	// Use this for initialization
 	void Start () 
 	{
 		hscr = gameObject.GetComponent<Health> ();
-		mscr = GameObject.Find ("GameLogic").GetComponent<Money> ();
+		//mscr = GameObject.Find ("GameLogic").GetComponent<Money> ();
 
 		if (gameObject.tag == "Tower") 
 		{
@@ -31,7 +31,10 @@ public class Death : MonoBehaviour
 		{
 			if(!isTower)
 			{
-				mscr.money += esscr.worth;
+                int playerCoins = PlayerPrefs.GetInt("PlayerCoins", 0);
+                playerCoins += esscr.worth;
+                PlayerPrefs.SetInt("PlayerCoins", playerCoins);
+				//mscr.money += esscr.worth;
 			}
 
 			Destroy(gameObject);

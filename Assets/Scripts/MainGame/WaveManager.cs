@@ -4,6 +4,7 @@ using System.Collections;
 public class WaveManager : MonoBehaviour 
 {
     //public int numOut;
+    public bool waveStarted = false;
     public int initialPouse;
     public GameObject[] enemies;
     public float cooldown;
@@ -24,6 +25,11 @@ public class WaveManager : MonoBehaviour
         } 
         else
         {
+            if(!waveStarted)
+            {
+                waveStarted = true;
+            }
+
             cd = cooldown;
             Vector3 pos = new Vector3(4f, 1f, Random.Range(-2, 3));
             int ind = Random.Range(0, enemies.Length);

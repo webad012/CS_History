@@ -168,6 +168,7 @@
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UIViewport.cs" />
      <Compile Include="Assets\Scripts\BallController.cs" />
      <Compile Include="Assets\Scripts\FirstScene\GameDataController.cs" />
+     <Compile Include="Assets\Scripts\FirstSceneController.cs" />
      <Compile Include="Assets\Scripts\LevelsSelectorController.cs" />
      <Compile Include="Assets\Scripts\MainGame\BuildPanel.cs" />
      <Compile Include="Assets\Scripts\MainGame\CatapultProjectile.cs" />
@@ -185,6 +186,7 @@
      <Compile Include="Assets\Scripts\MainGame\Shoot.cs" />
      <Compile Include="Assets\Scripts\MainGame\TileTaken.cs" />
      <Compile Include="Assets\Scripts\MainGame\TowerBase.cs" />
+     <Compile Include="Assets\Scripts\MainGame\TowerDefenseController.cs" />
      <Compile Include="Assets\Scripts\MainGame\WaveManager.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />
      <Compile Include="Assets\Scripts\MiniGameAbacusController.cs" />
@@ -192,7 +194,8 @@
      <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
      <Compile Include="Assets\Scripts\StaticTexts.cs" />
      <Compile Include="Assets\Scripts\StoryController.cs" />
-     <Compile Include="Assets\Scripts\UpgradeController.cs" />
+     <Compile Include="Assets\Scripts\Upgrade\UpgradeButtonController.cs" />
+     <Compile Include="Assets\Scripts\Upgrade\UpgradeController.cs" />
      <None Include="Assets\NGUI270Revive\Resources\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI270Revive\Examples\Models\Orc\Orc Skin.shader" />
      <None Include="Assets\NGUI270Revive\Examples\Atlases\Wooden\Arimo20.txt" />

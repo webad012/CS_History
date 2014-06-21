@@ -39,7 +39,8 @@ public class EnemyDamage : MonoBehaviour
             else if (hit.transform.tag == "House")
             {
                 //lose game
-                GameObject.Find("GameLogic").GetComponent<LooseGame>().lost = true;
+                //GameObject.Find("GameLogic").GetComponent<LooseGame>().lost = true;
+                GameObject.FindGameObjectWithTag("TowerDefenseController").GetComponent<TowerDefenseController>().gameLost = true;
                 enemyMoveScript.canMove = false;
             }
             else

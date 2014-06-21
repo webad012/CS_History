@@ -34,11 +34,22 @@ public class MainMenuController : MonoBehaviour
 
         knowledgeValueLabel.text = knowledge_string;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            ButtonLeft();
+        }
+        else if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            ButtonRight();
+        }
+        else if(Input.GetKeyDown(KeyCode.Return))
+        {
+
+        }
+    }
 
     void ButtonLeft()
     {
@@ -77,5 +88,6 @@ public class MainMenuController : MonoBehaviour
     
     void ExitSelected()
     {
+        Application.Quit();
     }
 }

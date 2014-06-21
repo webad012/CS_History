@@ -1,26 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/*[System.Serializable]
-public class StorySpecificObjects
-{
-    public GameObject ObjectToPlayWith;
-    public Vector2[] requiredResultRanges;
-    public Material backgroundMaterial;
-    public int knowledgeGain;
-}*/
-
 public class StoryController : MonoBehaviour 
 {
     public UILabel scoreLabel;
     public UILabel scoreRequiredLabel;
     public UILabel storyLabel;
-    //public StorySpecificObjects[] storySpec;
     public GameObject background;
     public GameObject continueButton;
     public UILabel continueLabel;
-    public UILabel knowledgeGainLabel;
-    public UILabel coinsGainLabel;
 
     private int score = 0;
     private int scoreRequired = 0;
@@ -33,7 +21,6 @@ public class StoryController : MonoBehaviour
     private int currentRequiredResult;
     private GameObject PlayObject;
 
-    //private TowersController towersControllerScript;
     private MiniGameData miniGameData;
 
 	void Start () 
@@ -48,7 +35,6 @@ public class StoryController : MonoBehaviour
         currentRequiredResult = 0;
         scoreLabel.text = "";
         scoreRequiredLabel.text = "";
-        //background.renderer.material = storySpec [levelSelected].backgroundMaterial;
         background.renderer.material = miniGameData.backgroundMaterial;
         UpdateGui();
 	}
@@ -64,19 +50,11 @@ public class StoryController : MonoBehaviour
         {
             if(minigameFinished)
             {
-                int playerKnowledge = PlayerPrefs.GetInt("PlayerKnowledge", 0);
-                int playerCoins = PlayerPrefs.GetInt("PlayerCoins", 0);
-                //playerKnowledge += storySpec [levelSelected].knowledgeGain;
-                playerKnowledge += miniGameData.knowledgeGain;
-                playerCoins += miniGameData.coinsGain;
-                PlayerPrefs.SetInt("PlayerKnowledge", playerKnowledge);
                 PlayerPrefs.SetInt("lastUnlockedStory", levelSelected);
+                PlayerPrefs.SetInt("TowerUnlocked" + levelSelected.ToString(), 1);
+                GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData[levelSelected].upgradeData.isUnlocked = true;
 
                 continueButton.SetActive(true);
-                //continueLabel.text = "You gained " + storySpec [levelSelected].knowledgeGain + " knowdledge\nClick to continue";
-                //continueLabel.text = "You gained " + miniGameData.knowledgeGain + " knowdledge\nClick to continue";
-                knowledgeGainLabel.text = miniGameData.knowledgeGain.ToString();
-                coinsGainLabel.text = miniGameData.coinsGain.ToString();
                 continueLabel.text = "Click to continue";
             }
 

@@ -1,30 +1,67 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-[System.Serializable]
+/*[System.Serializable]
 public class Tower
 {
     public GameObject towerPrefab;
     public int price;
     public UISprite buildButton;
-}
+}*/
 
 public class SetTower : MonoBehaviour 
 {
     public int selectedTowerIndex = 0;
-    public Tower[] towers;
     public GameObject tile;
-    private Money moneyScript;
+
+    public GameObject buildPanel;
+    public GameObject buildButtonPrefab;
+    public int buildPosX = 30;
 
     public bool buildPanelOpen = false;
     public TweenPosition buildPanelTweener;
     public TweenRotation buildPanelArrowTweener;
-    public UISprite xMark;
+
+    private List<GameObject> towerBuildButtons;
+
+    private Color onColor = new Color32 (220, 135, 30, 255);
+    private Color offColor = new Color32 (150, 215, 250, 255);
+    private Color grayColor = new Color32 (150, 150, 150, 150);
+
+    private GameDataController gameDataControllerScript;
 
 	// Use this for initialization
 	void Start () 
     {
-        moneyScript = GameObject.Find("GameLogic").GetComponent<Money>();
+        gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
+
+        towerBuildButtons = new List<GameObject>();
+        for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
+        {
+            Vector3 local_pos = new Vector3(buildPosX, 0, 0);
+
+            GameObject towerBuildButton = NGUITools.AddChild(buildPanel, buildButtonPrefab);
+            towerBuildButtons.Add(towerBuildButton);
+            towerBuildButtons[i].transform.localPosition = local_pos;
+            
+            towerBuildButtons[i].name = gameDataControllerScript.towersData[i].towerName;
+            towerBuildButtons[i].GetComponent<UIButtonMessage>().target = gameObject;
+
+            towerBuildButtons[i].transform.Find("Background").GetComponent<UISprite>().spriteName = gameDataControllerScript.towersData[i].mainGameData.spritename;
+
+            string price_string;
+            int price_int = gameDataControllerScript.towersData[i].mainGameData.price;
+            if (price_int == 0)
+            {
+                price_string = price_int.ToString();
+            } else
+            {
+                price_string = price_int.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+            }
+
+            towerBuildButtons[i].transform.Find("Label").GetComponent<UILabel>().text = price_string;
+        }
 
         UpdateGUI();
 	}
@@ -50,16 +87,26 @@ public class SetTower : MonoBehaviour
         {
             TileTaken tileTakenScript = tile.GetComponent<TileTaken>();
 
-            if(!tileTakenScript.isTaken && moneyScript.money >= towers[selectedTowerIndex].price)
+            int playerCoins = PlayerPrefs.GetInt("PlayerCoins", 0);
+            if(!tileTakenScript.isTaken && playerCoins >= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price)
             {
-                moneyScript.money -= towers[selectedTowerIndex].price;
+                playerCoins -= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price;
+                PlayerPrefs.SetInt("PlayerCoins", playerCoins);
                 Vector3 pos = new Vector3(tile.transform.position.x, 1f, tile.transform.position.z);
-                tileTakenScript.tower = (GameObject)Instantiate(towers[selectedTowerIndex].towerPrefab, 
-                                                                pos, 
-                                                                Quaternion.identity);
+                GameObject newTower = (GameObject)Instantiate(gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.towerPrefab, 
+                                                              pos, 
+                                                              Quaternion.identity);
+                newTower.gameObject.GetComponent<Health>().health = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetHealth();
+                newTower.gameObject.GetComponent<Shoot>().cooldown = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetShootCooldown();
+                newTower.gameObject.GetComponent<Shoot>().projectilePrefab = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.projectilePrefab;
+                newTower.gameObject.GetComponent<Shoot>().damage = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetDamage();
+
+                tileTakenScript.tower = newTower;
                 tileTakenScript.isTaken = true;
             }
         }
+
+        UpdateGUI ();
 	}
 
     void ToggleBuildPanel()
@@ -84,18 +131,14 @@ public class SetTower : MonoBehaviour
     void SetBuildChoice(GameObject btnObj)
     {
         string btnName = btnObj.name;
-        
-        if (btnName == "Button_TowerIncome") 
+
+        for (int i=0; i<towerBuildButtons.Count; i++)
         {
-            selectedTowerIndex = 0;
-        }
-        else if (btnName == "Button_TowerShoot") 
-        {
-            selectedTowerIndex = 1;
-        }
-        else if(btnName == "Button_TowerExpensive")
-        {
-            selectedTowerIndex = 2;
+            if(towerBuildButtons[i].name == btnName)
+            {
+                selectedTowerIndex = i;
+                break;
+            }
         }
         
         UpdateGUI ();
@@ -103,9 +146,42 @@ public class SetTower : MonoBehaviour
 
     void UpdateGUI ()
     {
-        Vector3 pos = new Vector3(towers [selectedTowerIndex].buildButton.transform.position.x, 
-                                  towers [selectedTowerIndex].buildButton.transform.position.y, 
-                                  towers [selectedTowerIndex].buildButton.transform.position.z);
-        xMark.transform.position = pos;
+        for(int i=0; i<towerBuildButtons.Count; i++)
+        {
+            towerBuildButtons [i].transform.Find("Background").gameObject.GetComponent<UISprite>().color = offColor;
+        }
+        
+        towerBuildButtons [selectedTowerIndex].transform.Find("Background").gameObject.GetComponent<UISprite>().color = onColor;
+        //turrets [structureIndex].costText.text = "$" + turrets [structureIndex].cost;
+
+        CheckTowersCosts ();
+    }
+
+    void CheckTowersCosts()
+    {
+        for (int i=0; i<towerBuildButtons.Count; i++) 
+        {
+            if(gameDataControllerScript.towersData[i].mainGameData.price > PlayerPrefs.GetInt("PlayerCoins", 0))
+            {
+                //turrets[i].costText.color = Color.red;
+                towerBuildButtons [i].transform.Find("Background").gameObject.GetComponent<UISprite>().color = grayColor;
+                towerBuildButtons[i].collider.enabled = false;
+            }
+            else
+            {
+                //turrets[i].costText.color = Color.green;
+                
+                if(selectedTowerIndex == i)
+                {
+                    towerBuildButtons [i].transform.Find("Background").gameObject.GetComponent<UISprite>().color = onColor;
+                }
+                else
+                {
+                    towerBuildButtons [i].transform.Find("Background").gameObject.GetComponent<UISprite>().color = offColor;
+                }
+                
+                towerBuildButtons[i].collider.enabled = true;
+            }
+        }
     }
 }

@@ -1,28 +1,21 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class LevelsSelectorController : MonoBehaviour 
 {
-    //public GameObject[] levels;
     public float outLeftX;
     public float outRightX;
     public float levelTransitionSpeed = 0.5f;
     public GameObject levelsAnchor;
-    public UILabel knowledgeRequiredLabel;
-    public UILabel knowledgeValueLabel;
 
     private Vector3 outLeftVector;
     private Vector3 outRightVector;
     private int currentLevel = 0;
-    //private int lastUnlockedLevel;
     private int lastUnlockedStory;
-    private int knowledge_int;
-    private string knowledge_string;
 
     private GameDataController gameDataControllerScript;
 
-    //private Level[] levelObjects;
     private List<GameObject> levelObjects;
 
 	// Use this for initialization
@@ -33,69 +26,47 @@ public class LevelsSelectorController : MonoBehaviour
         outLeftVector = new Vector3(outLeftX, 0, 0);
         outRightVector = new Vector3(outRightX, 0, 0);
 
-        //lastUnlockedLevel = PlayerPrefs.GetInt("lastUnlockedLevel", 0);
+        currentLevel = PlayerPrefs.GetInt("LevelSelected", 0);
         lastUnlockedStory = PlayerPrefs.GetInt("lastUnlockedStory", -1);
-        knowledge_int = PlayerPrefs.GetInt("PlayerKnowledge", 0);
-        if (knowledge_int == 0)
-        {
-            knowledge_string = knowledge_int.ToString();
-        }
-        else
-        {
-            knowledge_string = knowledge_int.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
-        }
 
-        //for(int i=0; i<levels.Length; i++)
         levelObjects = new List<GameObject>();
         for(int i=0; i<gameDataControllerScript.levels.Length; i++)
         {
             Vector3 level_pos = Vector3.zero;
-            if(gameDataControllerScript.levels[i].knowledgeRequired < knowledge_int)
+            if(i == 0 || PlayerPrefs.GetInt("LevelUnlocked" + i.ToString(), 0) == 1)
             {
                 level_pos = outLeftVector;
             }
-            else if(gameDataControllerScript.levels[i].knowledgeRequired > knowledge_int)
+            else
             {
                 level_pos = outRightVector;
             }
 
-            //levelObjects.Add((GameObject)Instantiate(gameDataControllerScript.levelPrefab, level_pos, Quaternion.identity));
             GameObject childButton = NGUITools.AddChild(levelsAnchor, gameDataControllerScript.levelPrefab);
             childButton.name = "Button_Level_" + i.ToString();
             levelObjects.Add(childButton);
-            //levelObjects.Add((GameObject)Instantiate(gameDataControllerScript.levelPrefab, Vector3.zero, Quaternion.identity));
-            /*if(i>lastUnlockedLevel)
-            {
-                //foreach(Transform c in levels[i].transform)
-                foreach(Transform c1 in levelObjects[i].transform)
-                {
-                    if(c1.name == "xMark")
-                    {
-                        c1.gameObject.SetActive(true);
-                    }
-                    else if(c1.name == "Button")
-                    {
-                        c1.gameObject.collider.enabled = false;
-                    }
-                }
-            }*/
 
             foreach(Transform c1 in levelObjects[i].transform)
             {
                 if(c1.name == "xMark")
                 {
-                    if(gameDataControllerScript.levels[i].knowledgeRequired > knowledge_int)
+                    //if(gameDataControllerScript.levels[i].knowledgeRequired > knowledge_int)
+                    if(i == 0 || PlayerPrefs.GetInt("LevelUnlocked" + i.ToString(), 0) == 1)
                     {
-                        c1.gameObject.SetActive(true);
+                        c1.gameObject.SetActive(false);
                     }
                     else
                     {
-                        c1.gameObject.SetActive(false);
+                        c1.gameObject.SetActive(true);
                     }
                 }
                 else if(c1.name == "Button")
                 {
-                    if(gameDataControllerScript.levels[i].knowledgeRequired > knowledge_int)
+                    if(i == 0 || PlayerPrefs.GetInt("LevelUnlocked" + i.ToString(), 0) == 1)
+                    {
+                        c1.gameObject.collider.enabled = true;
+                    }
+                    else
                     {
                         c1.gameObject.collider.enabled = false;
                     }
@@ -118,48 +89,38 @@ public class LevelsSelectorController : MonoBehaviour
                     }
                 }
             }
-            //levelObjects[i].transform.parent = levelsAnchor;
-            //NGUITools.AddChild(levelsAnchor, levelObjects[i]);
             levelObjects[i].transform.localPosition  = level_pos;
         }
 
         levelObjects [currentLevel].transform.localPosition = Vector3.zero;
-
-        UpdateGUI();
 	}
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.LoadLevel("MainMenu");
+        }
+    }
 
     void ButtonLeft()
     {
         if (currentLevel > 0)
         {
-            //TweenPosition.Begin(levels[currentLevel], levelTransitionSpeed, outRightVector);
             TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, outRightVector);
             currentLevel--;
-            TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, new Vector3(0, 0, 0));
-            //TweenPosition.Begin(levels[currentLevel], levelTransitionSpeed, new Vector3(0, 0, 0));
-            UpdateGUI();
+            TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, Vector3.zero);
         }
     }
 
     void ButtonRight()
     {
-        //if (currentLevel != levels.Length - 1)
         if (currentLevel != levelObjects.Count - 1)
         {
-            //TweenPosition.Begin(levels[currentLevel], levelTransitionSpeed, outLeftVector);
             TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, outLeftVector);
             currentLevel++;
-            //TweenPosition.Begin(levels[currentLevel], levelTransitionSpeed, new Vector3(0, 0, 0));
-            TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, new Vector3(0, 0, 0));
-            UpdateGUI();
+            TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, Vector3.zero);
         }
-    }
-
-    void UpdateGUI()
-    {
-        knowledgeValueLabel.text = knowledge_string;
-
-        knowledgeRequiredLabel.text = gameDataControllerScript.levels [currentLevel].knowledgeRequired.ToString();
     }
 
     void LevelSelected()
