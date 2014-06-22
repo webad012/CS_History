@@ -184,6 +184,7 @@
      <Compile Include="Assets\Scripts\MainGame\Projectile.cs" />
      <Compile Include="Assets\Scripts\MainGame\SetTower.cs" />
      <Compile Include="Assets\Scripts\MainGame\Shoot.cs" />
+     <Compile Include="Assets\Scripts\MainGame\SprinkleItemController.cs" />
      <Compile Include="Assets\Scripts\MainGame\TileTaken.cs" />
      <Compile Include="Assets\Scripts\MainGame\TowerBase.cs" />
      <Compile Include="Assets\Scripts\MainGame\TowerDefenseController.cs" />
@@ -192,7 +193,6 @@
      <Compile Include="Assets\Scripts\MiniGameAbacusController.cs" />
      <Compile Include="Assets\Scripts\OptionsController.cs" />
      <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
-     <Compile Include="Assets\Scripts\StaticTexts.cs" />
      <Compile Include="Assets\Scripts\StoryController.cs" />
      <Compile Include="Assets\Scripts\Upgrade\UpgradeButtonController.cs" />
      <Compile Include="Assets\Scripts\Upgrade\UpgradeController.cs" />

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class LevelsSelectorController : MonoBehaviour 
 {
+    public GameObject levelPrefab;
     public float outLeftX;
     public float outRightX;
     public float levelTransitionSpeed = 0.5f;
@@ -33,16 +34,17 @@ public class LevelsSelectorController : MonoBehaviour
         for(int i=0; i<gameDataControllerScript.levels.Length; i++)
         {
             Vector3 level_pos = Vector3.zero;
-            if(i == 0 || PlayerPrefs.GetInt("LevelUnlocked" + i.ToString(), 0) == 1)
+            //if(i == 0 || PlayerPrefs.GetInt("LevelUnlocked" + i.ToString(), 0) == 1)
+            if(i < currentLevel)
             {
                 level_pos = outLeftVector;
             }
-            else
+            else if(i > currentLevel)
             {
                 level_pos = outRightVector;
             }
 
-            GameObject childButton = NGUITools.AddChild(levelsAnchor, gameDataControllerScript.levelPrefab);
+            GameObject childButton = NGUITools.AddChild(levelsAnchor, levelPrefab);
             childButton.name = "Button_Level_" + i.ToString();
             levelObjects.Add(childButton);
 

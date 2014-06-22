@@ -7,6 +7,7 @@ public class MiniGameData
     public GameObject ObjectToPlayWith;
     public Vector2[] requiredResultRanges;
     public Material backgroundMaterial;
+    public string[] storyIntroTexts;
 }
 
 [System.Serializable]
@@ -35,13 +36,40 @@ public class TowerDefenseStats
     {
         return baseHealth * healthLevels [healthCurrentLevel].multiplicator;
     }
+    public float GetAdditionalHealth()
+    {
+        if (healthCurrentLevel + 1 >= healthLevels.Length)
+        {
+            return -1f;
+        }
+            
+        return baseHealth * (healthLevels [healthCurrentLevel + 1].multiplicator - healthLevels [healthCurrentLevel].multiplicator);
+    }
     public float GetShootCooldown()
     {
         return baseShootCooldown * shootCooldownLevels [shootCooldownCurrentLevel].multiplicator;
     }
+    public float GetAdditionalShootCooldown()
+    {
+        if (shootCooldownCurrentLevel + 1 >= shootCooldownLevels.Length)
+        {
+            return -1f;
+        }
+        
+        return baseShootCooldown * (shootCooldownLevels [shootCooldownCurrentLevel + 1].multiplicator - shootCooldownLevels [shootCooldownCurrentLevel].multiplicator);
+    }
     public float GetDamage()
     {
         return baseDamage * damageLevels [damageCurrentLevel].multiplicator;
+    }
+    public float GetAdditionalDamage()
+    {
+        if (damageCurrentLevel + 1 >= damageLevels.Length)
+        {
+            return -1f;
+        }
+        
+        return baseDamage * (damageLevels [damageCurrentLevel + 1].multiplicator - damageLevels [damageCurrentLevel].multiplicator);
     }
 }
 
@@ -82,6 +110,18 @@ public class House
 }
 
 [System.Serializable]
+public class EnemyData
+{
+    public string name;
+    public GameObject prefab;
+    public int health;
+    public float movementSpeed;
+    public int worth;
+    public int damage;
+    public float damageCooldown;
+}
+
+[System.Serializable]
 public class Level
 {
     public string levelName;
@@ -91,13 +131,13 @@ public class Level
     public int knowledgeRequired;
     public int startingCoins;
     public House house;
+    public EnemyData[] enemies;
+    public Texture groundTexture;
 }
 
 public class GameDataController : MonoBehaviour 
 {
     public TowerData[] towersData;
-
-    public GameObject levelPrefab;
     public Level[] levels;
     
     public bool canContinue = false;

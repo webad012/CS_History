@@ -92,7 +92,7 @@ public class SetTower : MonoBehaviour
             {
                 playerCoins -= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price;
                 PlayerPrefs.SetInt("PlayerCoins", playerCoins);
-                Vector3 pos = new Vector3(tile.transform.position.x, 1f, tile.transform.position.z);
+                Vector3 pos = new Vector3(tile.transform.position.x, 0.8f, tile.transform.position.z);
                 GameObject newTower = (GameObject)Instantiate(gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.towerPrefab, 
                                                               pos, 
                                                               Quaternion.identity);

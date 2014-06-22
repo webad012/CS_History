@@ -30,7 +30,8 @@ public class StoryController : MonoBehaviour
 
         continueButton.SetActive(false);
         score = 0;
-        storyTexts = StaticTexts.Instance.storyTexts[levelSelected];
+        //storyTexts = StaticTexts.Instance.storyTexts[levelSelected];
+        storyTexts = miniGameData.storyIntroTexts;
         storyIndex = 0;
         currentRequiredResult = 0;
         scoreLabel.text = "";

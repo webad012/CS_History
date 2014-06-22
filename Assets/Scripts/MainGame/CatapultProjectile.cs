@@ -6,25 +6,16 @@ public class CatapultProjectile : MonoBehaviour
     public float movementSpeed;
     public float damage;
     public Vector3 initPos;
-    //public GameObject explosion;
 
     public Vector3 target;
     public float firingAngle = 45.0f;
     public float gravity = 9.8f;
-
-    //private Transform myTransform;
     
     void Start()
     {
-        //Debug.Log(target);
         initPos = transform.position;
 
-        //StartCoroutine(SimulateProjectile());
         rigidbody.velocity = BallisticVel(target, 45);
-
-        //rigidbody.AddForce(Vector3.up * movementSpeed, ForceMode.Impulse);
-        //rigidbody.AddForce(Vector3.up * movementSpeed);
-        //rigidbody.velocity = new Vector3(-1, 1, 0) * movementSpeed;
     }
     
     // Update is called once per frame

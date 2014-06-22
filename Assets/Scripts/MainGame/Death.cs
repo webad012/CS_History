@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Death : MonoBehaviour 
 {
+    public GameObject tile;
 	private bool isTower = false;
 	private Health hscr;
 	//private Money mscr;

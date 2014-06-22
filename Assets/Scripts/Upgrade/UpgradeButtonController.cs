@@ -4,9 +4,8 @@ using System.Collections;
 public class UpgradeButtonController : MonoBehaviour 
 {
     public GameObject target;
-    public string functionName;
-
-    private bool isMouseOver = false;
+    public string onHoverFunction;
+    public string offHoverFunction;
 
 	// Use this for initialization
 	void Start () {
@@ -16,28 +15,22 @@ public class UpgradeButtonController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        //if (isMouseOver && collider.enabled)
-        if (isMouseOver && gameObject.GetComponent<UIButton>().isEnabled)
-        {
-            target.SendMessage(functionName, gameObject);
-        } 
-        else
+        /*if (!gameObject.GetComponent<UIButton>().isEnabled)
         {
             gameObject.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-
-        }
+        }*/
 	}
 
     void OnHover(bool isOver)
     {
-        //string labelText;
         if (isOver)
         {
-            isMouseOver = true;
+            target.SendMessage(onHoverFunction, gameObject);
         } 
         else
         {
-            isMouseOver = false;
+            target.SendMessage(offHoverFunction, gameObject);
+            //gameObject.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
         }
     }
 }

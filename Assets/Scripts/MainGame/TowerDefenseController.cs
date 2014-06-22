@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class TowerDefenseController : MonoBehaviour 
 {
+    public GameObject[] groundPlanes;
+
     public bool gameLost = false;
     private bool gameWon = false;
     private bool gamePaused = false;
@@ -12,15 +15,21 @@ public class TowerDefenseController : MonoBehaviour
     public GameObject gameWonWindow;
     private bool wonWindowDisplayed = false;
     public GameObject gamePausedWindow;
-    //private bool pausedWindowDisplayed = false;
-
-    //public GameObject buildPanel;
-    //public GameObject buildButtonPrefab;
-    //public int buildPosX;
 
     public UILabel knowledgeLabel;
     public UILabel coinsLabel;
 
+    public Vector3 sprinkleStartingLocation;
+    public GameObject sprinkleParentAnchor;
+    
+    // sprinkle coin
+    public GameObject coinDestination;
+    public GameObject coinIconPrefab;
+
+    // sprinkle knowledge
+    public GameObject knowledgeDestination;
+    public GameObject knowledgeIconPrefab;
+    
     private GameDataController gameDataControllerScript;
     private float coinsCooldown;
     private float knowledgeCooldown;
@@ -32,6 +41,11 @@ public class TowerDefenseController : MonoBehaviour
     {
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
+
+        for (int i=0; i<groundPlanes.Length; i++)
+        {
+            groundPlanes[i].renderer.material.mainTexture = gameDataControllerScript.levels [levelSelected].groundTexture;
+        }
         
         PlayerPrefs.SetInt("PlayerCoins", gameDataControllerScript.levels [levelSelected].startingCoins);
         coinsCooldown = gameDataControllerScript.levels [levelSelected].house.coinsTimeout;
@@ -95,6 +109,7 @@ public class TowerDefenseController : MonoBehaviour
                 {
                     coinsCooldown = gameDataControllerScript.levels [levelSelected].house.coinsTimeout;
                     coins_int += gameDataControllerScript.levels [levelSelected].house.coinsGain;
+                    StartCoroutine(SprinkleCoins(gameDataControllerScript.levels [levelSelected].house.coinsGain/10));
                 }
                 if (coins_int == 0)
                 {
@@ -106,10 +121,7 @@ public class TowerDefenseController : MonoBehaviour
                 PlayerPrefs.SetInt("PlayerCoins", coins_int);
 
                 /// knowledge part
-
                 string knowledge_string;
-                //int knowledge_int = PlayerPrefs.GetInt("PlayerKnowledge", 0);
-                //int knowledge_int = knowledgeGained;
                 if (gameObject.GetComponent<WaveManager>().waveStarted)
                 {
                     if (knowledgeCooldown > 0)
@@ -118,9 +130,8 @@ public class TowerDefenseController : MonoBehaviour
                     } else
                     {
                         knowledgeCooldown = gameDataControllerScript.levels [levelSelected].house.knowledgeTimeout;
-                        //knowledge_int += gameDataControllerScript.levels [levelSelected].house.knowledgeGain;
                         knowledgeGained += gameDataControllerScript.levels [levelSelected].house.knowledgeGain;
-                        //PlayerPrefs.SetInt("PlayerKnowledge", knowledge_int);
+                        StartCoroutine(SprinkleKnowledge(gameDataControllerScript.levels [levelSelected].house.knowledgeGain/10));
                     }
                 }
                 if (knowledgeGained == 0)
@@ -139,6 +150,9 @@ public class TowerDefenseController : MonoBehaviour
                     int knowledge_int = PlayerPrefs.GetInt("PlayerKnowledge", 0);
                     knowledge_int += knowledgeGained;
                     PlayerPrefs.SetInt("PlayerKnowledge", knowledge_int);
+
+                    int next_level = PlayerPrefs.GetInt("LevelSelected", 0) + 1;
+                    PlayerPrefs.SetInt("LevelUnlocked" + next_level.ToString(), 1);
 
                     gameWon = true;
                 }
@@ -160,7 +174,6 @@ public class TowerDefenseController : MonoBehaviour
     {
         int next_level = PlayerPrefs.GetInt("LevelSelected", 0) + 1;
 
-        PlayerPrefs.SetInt("LevelUnlocked" + next_level.ToString(), next_level);
         PlayerPrefs.SetInt("LevelSelected", next_level);
 
         if (PlayerPrefs.GetInt("LevelSelected", 0)+1 <= PlayerPrefs.GetInt("lastUnlockedStory", -1))
@@ -171,5 +184,33 @@ public class TowerDefenseController : MonoBehaviour
         {
             Application.LoadLevel("MiniGame");
         }
+    }
+
+    IEnumerator SprinkleCoins(int count)
+    {
+        for (int i=0; i<count; i++)
+        {
+            GameObject coinObject = NGUITools.AddChild(sprinkleParentAnchor, coinIconPrefab);
+            coinObject.transform.localPosition = sprinkleStartingLocation;
+            TweenPosition.Begin(coinObject, 0.5f, coinDestination.transform.localPosition);
+
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        yield return null;
+    }
+
+    IEnumerator SprinkleKnowledge(int count)
+    {
+        for (int i=0; i<count; i++)
+        {
+            GameObject knowledgeObject = NGUITools.AddChild(sprinkleParentAnchor, knowledgeIconPrefab);
+            knowledgeObject.transform.localPosition = sprinkleStartingLocation;
+            TweenPosition.Begin(knowledgeObject, 0.5f, knowledgeDestination.transform.localPosition);
+            
+            yield return new WaitForSeconds(0.2f);
+        }
+        
+        yield return null;
     }
 }
