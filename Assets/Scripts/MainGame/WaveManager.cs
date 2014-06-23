@@ -41,6 +41,7 @@ public class WaveManager : MonoBehaviour
 
             cd = cooldown;
             Vector3 pos = new Vector3(4f, 0.8f, Random.Range(-2, 3));
+            //Vector3 pos = new Vector3(4f, 1f, Random.Range(-2, 3));
             int ind = Random.Range(0, enemies.Length);
 
             GameObject enemyObject = (GameObject)Instantiate(enemies[ind].prefab, pos, Quaternion.identity);
