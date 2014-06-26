@@ -46,7 +46,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Editor\ReplaceSel.cs" />
      <Compile Include="Assets\NGUI270Revive\Examples\Scripts\InventorySystem\Editor\InvDatabaseInspector.cs" />
      <Compile Include="Assets\NGUI270Revive\Examples\Scripts\InventorySystem\Editor\InvFindItem.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\BMFontReader.cs" />
@@ -113,6 +112,9 @@
      <None Include="Assets\NGUI270Revive\Examples\Atlases\SciFi\SciFi Font - Normal.txt" />
      <None Include="Assets\NGUI270Revive\Resources\Shaders\Unlit - Transparent Colored (SoftClip).shader" />
      <None Include="Assets\NGUI270Revive\Examples\Models\Orc Armor\Orc Armor.shader" />
+ <Reference Include="Editor.ReorderableList">
+ <HintPath>D:/Projects/CS_History/Assets/Rotorz/Reorderable List Field/Editor/Editor.ReorderableList.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>

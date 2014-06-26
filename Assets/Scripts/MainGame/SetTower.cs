@@ -18,6 +18,7 @@ public class SetTower : MonoBehaviour
     public GameObject buildPanel;
     public GameObject buildButtonPrefab;
     public int buildPosX = 30;
+    public Vector2 buildPosY;
 
     public bool buildPanelOpen = false;
     public TweenPosition buildPanelTweener;
@@ -39,7 +40,7 @@ public class SetTower : MonoBehaviour
         towerBuildButtons = new List<GameObject>();
         for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
         {
-            Vector3 local_pos = new Vector3(buildPosX, 0, 0);
+            Vector3 local_pos = new Vector3(buildPosX, buildPosY.x + (i * (buildPosY.y - buildPosY.x)), 0);
 
             GameObject towerBuildButton = NGUITools.AddChild(buildPanel, buildButtonPrefab);
             towerBuildButtons.Add(towerBuildButton);

@@ -39,6 +39,7 @@ public class TowerDefenseController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        Time.timeScale = 1;
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 

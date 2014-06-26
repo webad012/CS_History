@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class MiniGameData
 {
     public GameObject ObjectToPlayWith;
     public Vector2[] requiredResultRanges;
-    public Material backgroundMaterial;
-    public string[] storyIntroTexts;
+    public Texture backgroundTexture;
 }
 
 [System.Serializable]
@@ -169,15 +169,15 @@ public class GameDataController : MonoBehaviour
             if(PlayerPrefs.GetInt("TowerUnlocked" + i.ToString(), 0) != 0)
             {
                 towersData[i].upgradeData.isUnlocked = true;
-                
-                towersData[i].mainGameData.stats.healthCurrentLevel = PlayerPrefs.GetInt("HealthLevel_" + i.ToString(), 0);
-                towersData[i].mainGameData.stats.damageCurrentLevel = PlayerPrefs.GetInt("DamageLevel_" + i.ToString(), 0);
-                towersData[i].mainGameData.stats.shootCooldownCurrentLevel = PlayerPrefs.GetInt("CooldownLevel_" + i.ToString(), 0);
             }
             else
             {
                 towersData[i].upgradeData.isUnlocked = false;
             }
+            
+            towersData[i].mainGameData.stats.healthCurrentLevel = PlayerPrefs.GetInt("HealthLevel_" + i.ToString(), 0);
+            towersData[i].mainGameData.stats.damageCurrentLevel = PlayerPrefs.GetInt("DamageLevel_" + i.ToString(), 0);
+            towersData[i].mainGameData.stats.shootCooldownCurrentLevel = PlayerPrefs.GetInt("CooldownLevel_" + i.ToString(), 0);
         }
     }
 }

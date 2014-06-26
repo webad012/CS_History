@@ -30,13 +30,13 @@ public class StoryController : MonoBehaviour
 
         continueButton.SetActive(false);
         score = 0;
-        //storyTexts = StaticTexts.Instance.storyTexts[levelSelected];
-        storyTexts = miniGameData.storyIntroTexts;
+        storyTexts = StaticTexts.Instance.storyTexts[levelSelected];
+        //storyTexts = miniGameData.storyIntroTexts;
         storyIndex = 0;
         currentRequiredResult = 0;
         scoreLabel.text = "";
         scoreRequiredLabel.text = "";
-        background.renderer.material = miniGameData.backgroundMaterial;
+        background.renderer.material.mainTexture = miniGameData.backgroundTexture;
         UpdateGui();
 	}
 	

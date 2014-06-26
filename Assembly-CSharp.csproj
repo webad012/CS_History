@@ -166,7 +166,9 @@
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UITiledSprite.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UIViewport.cs" />
+     <Compile Include="Assets\Scripts\AlphaNumericSort.cs" />
      <Compile Include="Assets\Scripts\BallController.cs" />
+     <Compile Include="Assets\Scripts\BinaryNumberController.cs" />
      <Compile Include="Assets\Scripts\FirstScene\GameDataController.cs" />
      <Compile Include="Assets\Scripts\FirstSceneController.cs" />
      <Compile Include="Assets\Scripts\LevelsSelectorController.cs" />
@@ -192,8 +194,11 @@
      <Compile Include="Assets\Scripts\MainGame\WaveManager.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />
      <Compile Include="Assets\Scripts\MiniGameAbacusController.cs" />
+     <Compile Include="Assets\Scripts\MiniGameBinaryController.cs" />
      <Compile Include="Assets\Scripts\OptionsController.cs" />
      <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
+     <Compile Include="Assets\Scripts\ProjectileBinaryController.cs" />
+     <Compile Include="Assets\Scripts\StaticTexts.cs" />
      <Compile Include="Assets\Scripts\StoryController.cs" />
      <Compile Include="Assets\Scripts\Upgrade\UpgradeButtonController.cs" />
      <Compile Include="Assets\Scripts\Upgrade\UpgradeController.cs" />

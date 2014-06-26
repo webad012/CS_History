@@ -44,7 +44,15 @@ public class Shoot : MonoBehaviour
                 else
                 {
                     projectile = (GameObject)Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-                    projectile.GetComponent<Projectile>().damage = damage;
+
+                    if(projectile.GetComponent<Projectile>() != null)
+                    {
+                        projectile.GetComponent<Projectile>().damage = damage;
+                    }
+                    else if(projectile.GetComponent<ProjectileBinaryController>() != null)
+                    {
+                        projectile.GetComponent<ProjectileBinaryController>().damage = damage;
+                    }
                 }
             }
         }

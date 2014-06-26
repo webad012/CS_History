@@ -21,14 +21,14 @@ public class UpgradeControllerStats
 public class UpgradeController : MonoBehaviour 
 {
     public float optionTransitionSpeed = 0.25f;
-    public float outLeftX;
-    public float outRightX;
+    public float outLeftX = -600f;
+    public float outRightX = 600f;
     public UILabel towerNameLabel;
     public UILabel knowledgeValueLabel;
 
     public UpgradeControllerStats upgradeStats;
 
-    private int currentTower;
+    private int currentTower = 0;
     private Vector3 outLeftVector;
     private Vector3 outRightVector;
 
@@ -51,23 +51,40 @@ public class UpgradeController : MonoBehaviour
         towerObjects = new List<GameObject>();
         for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
         {
+            Vector3 posVector = Vector3.zero;
+            //Debug.Log(i.ToString() + " - 0");
+            if(i < currentTower)
+            {
+                //Debug.Log(i.ToString() + " - 1");
+                posVector = outLeftVector;
+            }
+            else if(i > currentTower)
+            {
+                //Debug.Log(i.ToString() + " - 2");
+                posVector = outRightVector;
+                //Debug.Log("posVector.x: " + posVector.x.ToString());
+                //Debug.Log("outRightVector.x: " + outRightVector.x.ToString());
+            }
+
             GameObject childTower;
 
             if(gameDataControllerScript.towersData[i].upgradeData.isUnlocked)
             {
-                childTower = (GameObject)Instantiate(gameDataControllerScript.towersData[i].upgradeData.towerUnlockedPrefab, outRightVector, Quaternion.identity);
+                childTower = (GameObject)Instantiate(gameDataControllerScript.towersData[i].upgradeData.towerUnlockedPrefab, posVector, Quaternion.identity);
             }
             else
             {
-                childTower = (GameObject)Instantiate(gameDataControllerScript.towersData[i].upgradeData.towerLockedPrefab, outRightVector, Quaternion.identity);
+                childTower = (GameObject)Instantiate(gameDataControllerScript.towersData[i].upgradeData.towerLockedPrefab, posVector, Quaternion.identity);
             }
 
             childTower.name = gameDataControllerScript.towersData[i].towerName;
+            //Debug.Log(childTower.name + " - " + posVector.x.ToString());
+            //Debug.Log(i.ToString() + " - " + posVector.x.ToString());
 
             towerObjects.Add(childTower);
         }
 
-        towerObjects [currentTower].transform.localPosition = Vector3.zero;
+        //towerObjects [currentTower].transform.localPosition = Vector3.zero;
 
         UpdateGUI();
 	}
