@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class StaticTexts 
 {
+    public string web_api_location = "http://alas.matf.bg.ac.rs/~mi08204/projekti/CS_History/cshistoryapi.php";
 
     static private string[] storyLevel1 = {
         "Welcome!",

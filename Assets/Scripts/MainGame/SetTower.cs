@@ -55,8 +55,6 @@ public class SetTower : MonoBehaviour
             if(gameDataControllerScript.towersData[i].upgradeData.isUnlocked)
             {
                 Vector3 local_pos = Vector3.zero;
-                //Vector3 local_pos = new Vector3(buildPosX, buildPosY.x + ((unlockedTowers-1) * (buildPosY.y - buildPosY.x)), 0);
-                //Vector3 local_pos = new Vector3(buildPosX, (buildPosY.y - buildPosY.x)/2, 0);
                 if(unlockedTowers == 1)
                 {
                     //Debug.Log(buildPosY.y - buildPosY.x);
@@ -125,7 +123,8 @@ public class SetTower : MonoBehaviour
             TileTaken tileTakenScript = tile.GetComponent<TileTaken>();
 
             int playerCoins = PlayerPrefs.GetInt("PlayerCoins", 0);
-            if(!tileTakenScript.isTaken && playerCoins >= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price)
+            if(!tileTakenScript.isTaken 
+               && playerCoins >= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price)
             {
                 playerCoins -= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price;
                 PlayerPrefs.SetInt("PlayerCoins", playerCoins);

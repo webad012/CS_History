@@ -10,6 +10,9 @@ public class StoryController : MonoBehaviour
     public GameObject continueButton;
     public UILabel continueLabel;
 
+    public GameObject gamePausedWindow;
+    private bool gamePaused = false;
+
     private int score = 0;
     private int scoreRequired = 0;
     private string currentStoryText;
@@ -42,7 +45,32 @@ public class StoryController : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () 
-    {
+    {   
+        if (gamePaused)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                gamePaused = false;
+                TweenPosition.Begin(gamePausedWindow, 0.25f, new Vector3(0, 500, 0));
+            }
+            
+        } else
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                PlayerPrefs.SetInt("lastUnlockedStory", levelSelected);
+                PlayerPrefs.SetInt("TowerUnlocked" + levelSelected.ToString(), 1);
+                GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData [levelSelected].upgradeData.isUnlocked = true;
+
+                Application.LoadLevel("TowerDefense");
+            }
+
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                gamePaused = true;
+                TweenPosition.Begin(gamePausedWindow, 0.25f, Vector3.zero);
+            }
+        }
 	}
 
     void UpdateGui()
@@ -71,7 +99,8 @@ public class StoryController : MonoBehaviour
 
             scoreLabel.text = "Score: " + score_string;
             scoreRequiredLabel.text = "Score Required: " + scoreRequired.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
-        } else
+        } 
+        else
         {
             storyLabel.text = storyTexts [storyIndex];
         }
@@ -132,5 +161,15 @@ public class StoryController : MonoBehaviour
         //PlayObject = (GameObject)Instantiate(storySpec[levelSelected].ObjectToPlayWith, 
         PlayObject = (GameObject)Instantiate(miniGameData.ObjectToPlayWith, 
                                              new Vector3(0f, 0f, 0f), Quaternion.identity);
+    }
+
+    public void ButtonMainMenu()
+    {
+        Application.LoadLevel("MainMenu");
+    }
+    
+    public void ButtonRestart()
+    {
+        Application.LoadLevel(Application.loadedLevel);
     }
 }

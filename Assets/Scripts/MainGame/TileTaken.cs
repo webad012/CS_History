@@ -8,7 +8,7 @@ public class TileTaken : MonoBehaviour
 
     void Update()
     {
-        if(isTaken = true && tower == null)
+        if(isTaken == true && tower == null)
         {
             isTaken = false;
         }
