@@ -17,6 +17,7 @@ public class TowerDefenseController : MonoBehaviour
     public GameObject gamePausedWindow;
 
     public UILabel knowledgeLabel;
+    public UILabel knowledgeRequiredLabel;
     public UILabel coinsLabel;
 
     public Vector3 sprinkleStartingLocation;
@@ -47,6 +48,8 @@ public class TowerDefenseController : MonoBehaviour
         {
             groundPlanes[i].renderer.material.mainTexture = gameDataControllerScript.levels [levelSelected].groundTexture;
         }
+
+        knowledgeRequiredLabel.text = gameDataControllerScript.levels [levelSelected].knowledgeRequired.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
         
         PlayerPrefs.SetInt("PlayerCoins", gameDataControllerScript.levels [levelSelected].startingCoins);
         coinsCooldown = gameDataControllerScript.levels [levelSelected].house.coinsTimeout;
@@ -171,20 +174,9 @@ public class TowerDefenseController : MonoBehaviour
         Application.LoadLevel(Application.loadedLevel);
     }
 
-    public void ButtonNextLevel()
+    public void ButtonBack()
     {
-        int next_level = PlayerPrefs.GetInt("LevelSelected", 0) + 1;
-
-        PlayerPrefs.SetInt("LevelSelected", next_level);
-
-        if (PlayerPrefs.GetInt("LevelSelected", 0)+1 <= PlayerPrefs.GetInt("lastUnlockedStory", -1))
-        {
-            Application.LoadLevel("TowerDefense");
-        } 
-        else
-        {
-            Application.LoadLevel("MiniGame");
-        }
+        Application.LoadLevel("LevelSelector");
     }
 
     IEnumerator SprinkleCoins(int count)

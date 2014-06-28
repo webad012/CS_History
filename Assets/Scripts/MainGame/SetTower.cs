@@ -23,7 +23,8 @@ public class SetTower : MonoBehaviour
     public bool buildPanelOpen = false;
     public TweenPosition buildPanelTweener;
     public TweenRotation buildPanelArrowTweener;
-
+    public LayerMask placementLayerMask;
+    
     private List<GameObject> towerBuildButtons;
 
     private Color onColor = new Color32 (220, 135, 30, 255);
@@ -38,30 +39,57 @@ public class SetTower : MonoBehaviour
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 
         towerBuildButtons = new List<GameObject>();
+
+        int unlockedTowers = 0;
         for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
         {
-            Vector3 local_pos = new Vector3(buildPosX, buildPosY.x + (i * (buildPosY.y - buildPosY.x)), 0);
-
-            GameObject towerBuildButton = NGUITools.AddChild(buildPanel, buildButtonPrefab);
-            towerBuildButtons.Add(towerBuildButton);
-            towerBuildButtons[i].transform.localPosition = local_pos;
-            
-            towerBuildButtons[i].name = gameDataControllerScript.towersData[i].towerName;
-            towerBuildButtons[i].GetComponent<UIButtonMessage>().target = gameObject;
-
-            towerBuildButtons[i].transform.Find("Background").GetComponent<UISprite>().spriteName = gameDataControllerScript.towersData[i].mainGameData.spritename;
-
-            string price_string;
-            int price_int = gameDataControllerScript.towersData[i].mainGameData.price;
-            if (price_int == 0)
+            if(gameDataControllerScript.towersData[i].upgradeData.isUnlocked)
             {
-                price_string = price_int.ToString();
-            } else
-            {
-                price_string = price_int.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+                unlockedTowers++;
             }
+        }
 
-            towerBuildButtons[i].transform.Find("Label").GetComponent<UILabel>().text = price_string;
+        int tmp = unlockedTowers;
+        for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
+        {
+            if(gameDataControllerScript.towersData[i].upgradeData.isUnlocked)
+            {
+                Vector3 local_pos = Vector3.zero;
+                //Vector3 local_pos = new Vector3(buildPosX, buildPosY.x + ((unlockedTowers-1) * (buildPosY.y - buildPosY.x)), 0);
+                //Vector3 local_pos = new Vector3(buildPosX, (buildPosY.y - buildPosY.x)/2, 0);
+                if(unlockedTowers == 1)
+                {
+                    //Debug.Log(buildPosY.y - buildPosY.x);
+                    //Debug.Log((buildPosY.y - buildPosY.x)/2);
+                    local_pos = new Vector3(buildPosX, (buildPosY.y + buildPosY.x)/2, 0);
+                }
+                else if(unlockedTowers == 2)
+                {
+                    local_pos = new Vector3(buildPosX, buildPosY.x + ((tmp-1) * (buildPosY.y - buildPosY.x)), 0);
+                    tmp--;
+                }
+
+                GameObject towerBuildButton = NGUITools.AddChild(buildPanel, buildButtonPrefab);
+                towerBuildButtons.Add(towerBuildButton);
+                towerBuildButtons[i].transform.localPosition = local_pos;
+                
+                towerBuildButtons[i].name = gameDataControllerScript.towersData[i].towerName;
+                towerBuildButtons[i].GetComponent<UIButtonMessage>().target = gameObject;
+
+                towerBuildButtons[i].transform.Find("Background").GetComponent<UISprite>().spriteName = gameDataControllerScript.towersData[i].mainGameData.spritename;
+
+                string price_string;
+                int price_int = gameDataControllerScript.towersData[i].mainGameData.price;
+                if (price_int == 0)
+                {
+                    price_string = price_int.ToString();
+                } else
+                {
+                    price_string = price_int.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+                }
+
+                towerBuildButtons[i].transform.Find("Label").GetComponent<UILabel>().text = price_string;
+            }
         }
 
         UpdateGUI();
@@ -72,13 +100,21 @@ public class SetTower : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 20))
+        //if (Physics.Raycast(ray, out hit, 20))
+        if (Physics.Raycast(ray, out hit, 1000, placementLayerMask))
         {
-            if(hit.transform.tag == "Tile")
+            //Debug.Log(hit.transform.name);
+            if (hit.transform.tag == "Tile")
             {
                 tile = hit.transform.gameObject;
+            } else
+            {
+                tile = null;
             }
-            else
+        } 
+        else
+        {
+            if(tile)
             {
                 tile = null;
             }

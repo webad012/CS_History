@@ -122,6 +122,16 @@ public class EnemyData
 }
 
 [System.Serializable]
+public class WaveData
+{
+    public float startCooldown;
+    public float spawnCooldown;
+    public int numberOfEnemies;
+    public EnemyData[] enemies;
+    public float multiplicator;
+}
+
+[System.Serializable]
 public class Level
 {
     public string levelName;
@@ -131,8 +141,9 @@ public class Level
     public int knowledgeRequired;
     public int startingCoins;
     public House house;
-    public EnemyData[] enemies;
+    //public EnemyData[] enemies;
     public Texture groundTexture;
+    public WaveData wavesData;
 }
 
 public class GameDataController : MonoBehaviour 

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public class LevelsSelectorController : MonoBehaviour 
 {
     public GameObject levelPrefab;
-    public float outLeftX;
-    public float outRightX;
     public float levelTransitionSpeed = 0.5f;
     public GameObject levelsAnchor;
 
@@ -14,6 +12,9 @@ public class LevelsSelectorController : MonoBehaviour
     private Vector3 outRightVector;
     private int currentLevel = 0;
     private int lastUnlockedStory;
+
+    //private float outLeftX;
+    //private float outRightX;
 
     private GameDataController gameDataControllerScript;
 
@@ -24,8 +25,8 @@ public class LevelsSelectorController : MonoBehaviour
     {
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 
-        outLeftVector = new Vector3(outLeftX, 0, 0);
-        outRightVector = new Vector3(outRightX, 0, 0);
+        outLeftVector = new Vector3(-Screen.width, 0, 0);
+        outRightVector = new Vector3(Screen.width, 0, 0);
 
         currentLevel = PlayerPrefs.GetInt("LevelSelected", 0);
         lastUnlockedStory = PlayerPrefs.GetInt("lastUnlockedStory", -1);

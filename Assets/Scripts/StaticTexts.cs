@@ -20,7 +20,9 @@ public class StaticTexts
         "Was probably invented by the Babylonians as an aid to simple arithmetic around this time period", 
         "This laid the foundations for positional notation and later computing developments"
     };
-    static private string[] storyLevel2 = {"Text4", "Text5", "Text6", "Text7"};
+    static private string[] storyLevel2 = {"Binary number system", 
+        "Described by Indian mathematician/scholar/musician Pingala", 
+        "Now used in the design of essentially all modern computing equipment"};
     public List<string[]> storyTexts = new List<string[]>(){storyLevel1, storyLevel2};
     
     protected StaticTexts(){}

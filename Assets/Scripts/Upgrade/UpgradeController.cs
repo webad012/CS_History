@@ -20,9 +20,7 @@ public class UpgradeControllerStats
 
 public class UpgradeController : MonoBehaviour 
 {
-    public float optionTransitionSpeed = 0.25f;
-    public float outLeftX = -600f;
-    public float outRightX = 600f;
+    public float optionTransitionSpeed = 0.5f;
     public UILabel towerNameLabel;
     public UILabel knowledgeValueLabel;
 
@@ -45,25 +43,20 @@ public class UpgradeController : MonoBehaviour
 
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 
-        outLeftVector = new Vector3(outLeftX, 0, 0);
-        outRightVector = new Vector3(outRightX, 0, 0);
+        outLeftVector = new Vector3(-Screen.width, 0, 0);
+        outRightVector = new Vector3(Screen.width, 0, 0);
 
         towerObjects = new List<GameObject>();
         for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
         {
             Vector3 posVector = Vector3.zero;
-            //Debug.Log(i.ToString() + " - 0");
             if(i < currentTower)
             {
-                //Debug.Log(i.ToString() + " - 1");
                 posVector = outLeftVector;
             }
             else if(i > currentTower)
             {
-                //Debug.Log(i.ToString() + " - 2");
                 posVector = outRightVector;
-                //Debug.Log("posVector.x: " + posVector.x.ToString());
-                //Debug.Log("outRightVector.x: " + outRightVector.x.ToString());
             }
 
             GameObject childTower;
@@ -78,13 +71,8 @@ public class UpgradeController : MonoBehaviour
             }
 
             childTower.name = gameDataControllerScript.towersData[i].towerName;
-            //Debug.Log(childTower.name + " - " + posVector.x.ToString());
-            //Debug.Log(i.ToString() + " - " + posVector.x.ToString());
-
             towerObjects.Add(childTower);
         }
-
-        //towerObjects [currentTower].transform.localPosition = Vector3.zero;
 
         UpdateGUI();
 	}
@@ -115,6 +103,10 @@ public class UpgradeController : MonoBehaviour
             upgradeStats.cooldownLabel.text += gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetShootCooldown().ToString();
             upgradeStats.healthLabel.text += gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetHealth().ToString();
         
+      
+            upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
+            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
+            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
 
             if(gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageCurrentLevel+1 >= gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageLevels.Length
                || knowledge_int < gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageLevels[gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageCurrentLevel+1].price)
@@ -160,16 +152,20 @@ public class UpgradeController : MonoBehaviour
         } 
         else
         {
+            upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
+            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
+            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
+
             towerNameLabel.text = "Locked";
 
             upgradeStats.damageLabel.text += "NaN";
-            upgradeStats.damageButton.collider.enabled = false;
+            upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = false;
 
             upgradeStats.cooldownLabel.text += "NaN";
-            upgradeStats.cooldownButton.collider.enabled = false;
+            upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = false;
 
             upgradeStats.healthLabel.text += "NaN";
-            upgradeStats.healthButton.collider.enabled = false;
+            upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
         }
     }
 
@@ -179,7 +175,7 @@ public class UpgradeController : MonoBehaviour
         {
             TweenPosition.Begin(towerObjects[currentTower], optionTransitionSpeed, outRightVector);
             currentTower--;
-            TweenPosition.Begin(towerObjects[currentTower], optionTransitionSpeed, new Vector3(0, 0, 0));
+            TweenPosition.Begin(towerObjects[currentTower], optionTransitionSpeed, Vector3.zero);
             UpdateGUI();
         }
     }
@@ -190,7 +186,7 @@ public class UpgradeController : MonoBehaviour
         {
             TweenPosition.Begin(towerObjects[currentTower], optionTransitionSpeed, outLeftVector);
             currentTower++;
-            TweenPosition.Begin(towerObjects[currentTower], optionTransitionSpeed, new Vector3(0, 0, 0));
+            TweenPosition.Begin(towerObjects[currentTower], optionTransitionSpeed, Vector3.zero);
             UpdateGUI();
         }
     }

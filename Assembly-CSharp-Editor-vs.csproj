@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Editor\AlphaNumericSort.cs" />
      <Compile Include="Assets\NGUI270Revive\Examples\Scripts\InventorySystem\Editor\InvDatabaseInspector.cs" />
      <Compile Include="Assets\NGUI270Revive\Examples\Scripts\InventorySystem\Editor\InvFindItem.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\BMFontReader.cs" />
@@ -56,6 +57,8 @@
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\NGUISelectionTools.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\NGUISettings.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\NGUITransformInspector.cs" />
+     <Compile Include="Assets\NGUI270Revive\Scripts\Editor\RebasedEditorGUIUtility.cs" />
+     <Compile Include="Assets\NGUI270Revive\Scripts\Editor\RebasedUndo.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\SpriteSelector.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\UIAtlasInspector.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Editor\UIAtlasMaker.cs" />

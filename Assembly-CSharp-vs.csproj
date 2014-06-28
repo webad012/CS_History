@@ -130,8 +130,6 @@
      <Compile Include="Assets\NGUI270Revive\Scripts\Internal\UIGeometry.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Internal\UINode.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Internal\UIWidget.cs" />
-     <Compile Include="Assets\NGUI270Revive\Scripts\Rebased\RebasedEditorGUIUtility.cs" />
-     <Compile Include="Assets\NGUI270Revive\Scripts\Rebased\RebasedUndo.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Tweening\AnimatedAlpha.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Tweening\AnimatedColor.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\Tweening\SpringPosition.cs" />
@@ -166,11 +164,10 @@
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UITiledSprite.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UIViewport.cs" />
-     <Compile Include="Assets\Scripts\AlphaNumericSort.cs" />
      <Compile Include="Assets\Scripts\BallController.cs" />
      <Compile Include="Assets\Scripts\BinaryNumberController.cs" />
+     <Compile Include="Assets\Scripts\FirstScene\FirstSceneController.cs" />
      <Compile Include="Assets\Scripts\FirstScene\GameDataController.cs" />
-     <Compile Include="Assets\Scripts\FirstSceneController.cs" />
      <Compile Include="Assets\Scripts\LevelsSelectorController.cs" />
      <Compile Include="Assets\Scripts\MainGame\BuildPanel.cs" />
      <Compile Include="Assets\Scripts\MainGame\CatapultProjectile.cs" />
