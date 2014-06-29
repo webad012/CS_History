@@ -36,20 +36,58 @@ public class TowerDefenseStats
     {
         return baseHealth * healthLevels [healthCurrentLevel].multiplicator;
     }
-    public float GetAdditionalHealth()
+    public string GetAdditionalHealthString()
+    {
+        if (healthCurrentLevel + 1 >= healthLevels.Length)
+        {
+            return "-1";
+        }
+
+        string result_string = "";
+        float result_float = baseHealth * (healthLevels [healthCurrentLevel + 1].multiplicator - healthLevels [healthCurrentLevel].multiplicator);
+
+        if (result_float >= 0)
+        {
+            result_string = "+";
+        }
+
+        result_string += result_float.ToString();
+         
+        return result_string;
+    }
+    public float GetAdditionalHealthFloat()
     {
         if (healthCurrentLevel + 1 >= healthLevels.Length)
         {
             return -1f;
         }
-            
+        
         return baseHealth * (healthLevels [healthCurrentLevel + 1].multiplicator - healthLevels [healthCurrentLevel].multiplicator);
     }
     public float GetShootCooldown()
     {
         return baseShootCooldown * shootCooldownLevels [shootCooldownCurrentLevel].multiplicator;
     }
-    public float GetAdditionalShootCooldown()
+    public string GetAdditionalShootCooldownString()
+    {
+        if (shootCooldownCurrentLevel + 1 >= shootCooldownLevels.Length)
+        {
+            return "-1";
+        }
+
+        string result_string = "";
+        float result_float = baseShootCooldown * (shootCooldownLevels [shootCooldownCurrentLevel + 1].multiplicator - shootCooldownLevels [shootCooldownCurrentLevel].multiplicator);
+        
+        if (result_float >= 0)
+        {
+            result_string = "+";
+        }
+        
+        result_string += result_float.ToString();
+        
+        return result_string;        
+    }
+    public float GetAdditionalShootCooldownFloat()
     {
         if (shootCooldownCurrentLevel + 1 >= shootCooldownLevels.Length)
         {
@@ -62,7 +100,26 @@ public class TowerDefenseStats
     {
         return baseDamage * damageLevels [damageCurrentLevel].multiplicator;
     }
-    public float GetAdditionalDamage()
+    public string GetAdditionalDamageString()
+    {
+        if (damageCurrentLevel + 1 >= damageLevels.Length)
+        {
+            return "-1";
+        }
+
+        string result_string = "";
+        float result_float = baseDamage * (damageLevels [damageCurrentLevel + 1].multiplicator - damageLevels [damageCurrentLevel].multiplicator);
+        
+        if (result_float >= 0)
+        {
+            result_string = "+";
+        }
+        
+        result_string += result_float.ToString();
+        
+        return result_string;          
+    }
+    public float GetAdditionalDamageFloat()
     {
         if (damageCurrentLevel + 1 >= damageLevels.Length)
         {

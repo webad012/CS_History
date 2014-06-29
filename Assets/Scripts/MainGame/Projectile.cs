@@ -41,7 +41,9 @@ public class Projectile : MonoBehaviour {
     {
         if (other.tag == "Enemy")
         {
-            other.GetComponent<Health>().health -= damage;
+            //Debug.Log("asd1");
+            //other.GetComponent<Health>().health -= damage;
+            other.gameObject.GetComponent<Health>().TakeDamage(damage);
             //create particles
             Destroy(gameObject);
         }

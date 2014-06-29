@@ -20,7 +20,7 @@ public class TowerDefenseController : MonoBehaviour
     public UILabel knowledgeRequiredLabel;
     public UILabel coinsLabel;
 
-    public Vector3 sprinkleStartingLocation;
+    public GameObject sprinkleStartingObject;
     public GameObject sprinkleParentAnchor;
     
     // sprinkle coin
@@ -37,9 +37,20 @@ public class TowerDefenseController : MonoBehaviour
     private int levelSelected;
     private int knowledgeGained = 0;
 
+    private Vector3 coinsRealDestination;
+    private Vector3 knowledgeRealDestination;
+
 	// Use this for initialization
 	void Start () 
     {
+        coinsRealDestination = new Vector3(-Camera.main.WorldToScreenPoint(coinDestination.transform.position).x,
+                                              Camera.main.WorldToScreenPoint(coinDestination.transform.parent.position).y,
+                                              0f);
+        
+        
+        knowledgeRealDestination = new Vector3(-Camera.main.WorldToScreenPoint(knowledgeDestination.transform.position).x,
+                                             Camera.main.WorldToScreenPoint(knowledgeDestination.transform.parent.position).y,
+                                             0f);
         Time.timeScale = 1;
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
@@ -113,7 +124,9 @@ public class TowerDefenseController : MonoBehaviour
                 {
                     coinsCooldown = gameDataControllerScript.levels [levelSelected].house.coinsTimeout;
                     coins_int += gameDataControllerScript.levels [levelSelected].house.coinsGain;
-                    StartCoroutine(SprinkleCoins(gameDataControllerScript.levels [levelSelected].house.coinsGain/10));
+                    StartCoroutine(SprinkleCoins(gameDataControllerScript.levels [levelSelected].house.coinsGain, 
+                                                 10,
+                                                 sprinkleStartingObject.transform.position));
                 }
                 if (coins_int == 0)
                 {
@@ -135,7 +148,9 @@ public class TowerDefenseController : MonoBehaviour
                     {
                         knowledgeCooldown = gameDataControllerScript.levels [levelSelected].house.knowledgeTimeout;
                         knowledgeGained += gameDataControllerScript.levels [levelSelected].house.knowledgeGain;
-                        StartCoroutine(SprinkleKnowledge(gameDataControllerScript.levels [levelSelected].house.knowledgeGain/10));
+                        StartCoroutine(SprinkleKnowledge(gameDataControllerScript.levels [levelSelected].house.knowledgeGain, 
+                                                         10,
+                                                         sprinkleStartingObject.transform.position));
                     }
                 }
                 if (knowledgeGained == 0)
@@ -179,13 +194,17 @@ public class TowerDefenseController : MonoBehaviour
         Application.LoadLevel("LevelSelector");
     }
 
-    IEnumerator SprinkleCoins(int count)
+    public IEnumerator SprinkleCoins(int coins, int step, Vector3 sourceObjectPos)
     {
+        Vector3 objectToScreen = Camera.main.WorldToScreenPoint(sourceObjectPos);
+        Vector3 sourcePos = new Vector3((objectToScreen.x - (Camera.main.pixelWidth/2)), 
+                                        (objectToScreen.y - (Camera.main.pixelHeight/2)), 0f);
+        int count = coins / step;
         for (int i=0; i<count; i++)
         {
             GameObject coinObject = NGUITools.AddChild(sprinkleParentAnchor, coinIconPrefab);
-            coinObject.transform.localPosition = sprinkleStartingLocation;
-            TweenPosition.Begin(coinObject, 0.5f, coinDestination.transform.localPosition);
+            coinObject.transform.localPosition = sourcePos;
+            TweenPosition.Begin(coinObject, 0.5f, coinsRealDestination);
 
             yield return new WaitForSeconds(0.2f);
         }
@@ -193,13 +212,17 @@ public class TowerDefenseController : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator SprinkleKnowledge(int count)
+    public IEnumerator SprinkleKnowledge(int knowledge, int step, Vector3 sourceObjectPos)
     {
+        Vector3 objectToScreen = Camera.main.WorldToScreenPoint(sourceObjectPos);
+        Vector3 sourcePos = new Vector3((objectToScreen.x - (Camera.main.pixelWidth/2)), 
+                                        (objectToScreen.y - (Camera.main.pixelHeight/2)), 0f);
+        int count = knowledge / step;
         for (int i=0; i<count; i++)
         {
             GameObject knowledgeObject = NGUITools.AddChild(sprinkleParentAnchor, knowledgeIconPrefab);
-            knowledgeObject.transform.localPosition = sprinkleStartingLocation;
-            TweenPosition.Begin(knowledgeObject, 0.5f, knowledgeDestination.transform.localPosition);
+            knowledgeObject.transform.localPosition = sourcePos;
+            TweenPosition.Begin(knowledgeObject, 0.5f, knowledgeRealDestination);
             
             yield return new WaitForSeconds(0.2f);
         }

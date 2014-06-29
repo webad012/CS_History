@@ -93,6 +93,7 @@
      <None Include="Assets\Fonts\HoboStd_42.txt" />
      <None Include="Assets\NGUI270Revive\Examples\Atlases\Wooden\Arimo18.txt" />
      <None Include="Assets\NGUI270Revive\Resources\Shaders\Unlit - Transparent Colored (Packed) (AlphaClip) .shader" />
+     <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\NGUI270Revive\Examples\Atlases\SciFi\SciFi Font - Header.txt" />
      <None Include="Assets\NGUI270Revive\Resources\Shaders\Unlit - Premultiplied Colored (AlphaClip).shader" />
      <None Include="Assets\NGUI270Revive\Resources\Shaders\Unlit - Transparent Colored (AlphaClip).shader" />
@@ -123,6 +124,8 @@
  </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{C139E134-3ECD-2F9D-BB34-0C24D7F47217}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{EC2B2083-C7D2-93AC-D263-37A338590D72}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>

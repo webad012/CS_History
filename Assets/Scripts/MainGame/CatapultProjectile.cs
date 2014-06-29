@@ -33,7 +33,8 @@ public class CatapultProjectile : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
-            other.GetComponent<Health>().health -= damage;
+            //other.GetComponent<Health>().health -= damage;
+            other.GetComponent<Health>().TakeDamage(damage);
             //create particles
             Destroy(gameObject);
         }

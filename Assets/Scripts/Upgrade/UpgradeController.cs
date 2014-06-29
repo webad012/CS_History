@@ -26,6 +26,18 @@ public class UpgradeController : MonoBehaviour
 
     public UpgradeControllerStats upgradeStats;
 
+    private string towerName;
+    private string damageInfoString;
+    private string damageButtonString;
+    private string damageAdditionString;
+    private string cooldowInfoString;
+    private string cooldowButtonString;
+    private string cooldowAdditionString;
+    private string healthInfoString;
+    private string healthButtonString;
+    private string healthAdditionString;
+    private string knowledgeString;
+
     private int currentTower = 0;
     private Vector3 outLeftVector;
     private Vector3 outRightVector;
@@ -74,39 +86,163 @@ public class UpgradeController : MonoBehaviour
             towerObjects.Add(childTower);
         }
 
-        UpdateGUI();
+        //UpdateGUI();
 	}
 
-    void UpdateGUI()
+    void Update()
     {
-        string knowledge_string;
         int knowledge_int = PlayerPrefs.GetInt("PlayerKnowledge", 0);
         if (knowledge_int == 0)
         {
-            knowledge_string = knowledge_int.ToString();
+            knowledgeString = knowledge_int.ToString();
         }
         else
         {
-            knowledge_string = knowledge_int.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+            knowledgeString = knowledge_int.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        knowledgeValueLabel.text = knowledge_string;
-
-        upgradeStats.damageLabel.text = "Tower damage: ";
-        upgradeStats.cooldownLabel.text = "Tower cooldown: ";
-        upgradeStats.healthLabel.text = "Tower health: ";
+        damageInfoString = "Tower damage: ";
+        cooldowInfoString = "Tower cooldown: ";
+        healthInfoString = "Tower health: ";
 
         if (gameDataControllerScript.towersData [currentTower].upgradeData.isUnlocked)
         {
+            towerName = gameDataControllerScript.towersData [currentTower].towerName;
+
+            TowerDefenseStats towerStats = gameDataControllerScript.towersData [currentTower].mainGameData.stats;
+
+            damageInfoString += towerStats.GetDamage().ToString();
+            cooldowInfoString += towerStats.GetShootCooldown().ToString();
+            healthInfoString += towerStats.GetHealth().ToString();
+
+            damageAdditionString = towerStats.GetAdditionalDamageString();
+            cooldowAdditionString = towerStats.GetAdditionalShootCooldownString();
+            healthAdditionString = towerStats.GetAdditionalHealthString();
+
+            if(towerStats.damageCurrentLevel+1 >= towerStats.damageLevels.Length)
+            {
+                upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = false;
+                damageButtonString = "MAX";
+            }
+            else
+            {
+                if(knowledge_int < towerStats.damageLevels[towerStats.damageCurrentLevel+1].price)
+                {
+                    upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = false;
+                }
+                else
+                {
+                    upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = true;
+                }
+                damageButtonString = "Upgrade: " + towerStats.damageLevels[towerStats.damageCurrentLevel+1].price.ToString();
+            }
+
+            if(towerStats.shootCooldownCurrentLevel+1 >= towerStats.shootCooldownLevels.Length)
+            {
+                upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = false;
+                cooldowButtonString = "MAX";
+            }
+            else
+            {
+                if(knowledge_int < towerStats.shootCooldownLevels[towerStats.shootCooldownCurrentLevel+1].price)
+                {
+                    upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = false;
+                }
+                else
+                {
+                    upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = true;
+                }
+                cooldowButtonString = "Upgrade: " + towerStats.shootCooldownLevels[towerStats.shootCooldownCurrentLevel+1].price.ToString();
+            }
+
+            if(towerStats.healthCurrentLevel+1 >= towerStats.healthLevels.Length)
+            {
+                upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
+                healthButtonString = "MAX";
+            }
+            else
+            {
+                if(knowledge_int < towerStats.healthLevels[towerStats.healthCurrentLevel+1].price)
+                {
+                    upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
+                }
+                else
+                {
+                    upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = true;
+                }
+                healthButtonString = "Upgrade: " + towerStats.healthLevels[towerStats.healthCurrentLevel+1].price.ToString();
+            }
+        }
+        else
+        {
+            towerName = "Locked";
+            
+            damageInfoString += "NaN";
+            cooldowInfoString += "NaN";
+            healthInfoString += "NaN";
+
+            damageButtonString = "Locked";
+            cooldowButtonString = "Locked";
+            healthButtonString = "Locked";
+            
+            damageAdditionString = "";
+            cooldowAdditionString = "";
+            healthAdditionString = "";
+
+            upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = false;
+            upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = false;
+            upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
+        }
+
+        UpdateGUI();
+    }
+
+    void UpdateGUI()
+    {
+        towerNameLabel.text = towerName;
+
+        upgradeStats.damageLabel.text = damageInfoString;
+        upgradeStats.cooldownLabel.text = cooldowInfoString;
+        upgradeStats.healthLabel.text = healthInfoString;
+
+        upgradeStats.damageAdditionLabel.text = damageAdditionString;
+        upgradeStats.cooldownAdditionLabel.text = cooldowAdditionString;
+        upgradeStats.healthAdditionLabel.text = healthAdditionString;
+
+        upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = damageButtonString;
+        upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = cooldowButtonString;
+        upgradeStats.healthButton.transform.Find("Label").GetComponent<UILabel>().text = healthButtonString;
+
+        knowledgeValueLabel.text = knowledgeString;
+
+        /*if (gameDataControllerScript.towersData [currentTower].upgradeData.isUnlocked)
+        {
             towerNameLabel.text = gameDataControllerScript.towersData [currentTower].towerName;
             upgradeStats.damageLabel.text += gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetDamage().ToString();
+            upgradeStats.damageAdditionLabel.text = gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalDamageString();
+
             upgradeStats.cooldownLabel.text += gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetShootCooldown().ToString();
+            upgradeStats.cooldownAdditionLabel.text = gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalShootCooldownString();
+
             upgradeStats.healthLabel.text += gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetHealth().ToString();
-        
-      
-            upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
+            upgradeStats.healthAdditionLabel.text = gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalHealthString();
+
+            int currentUpgradeLevel = 0;
+            float upgradePrice = 0f;
+            upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade: ";
+            currentUpgradeLevel = gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageCurrentLevel;
+            upgradePrice = gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageLevels[currentUpgradeLevel+1].price;
+            upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text += upgradePrice.ToString();
+
+            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade: ";
+            currentUpgradeLevel = gameDataControllerScript.towersData [currentTower].mainGameData.stats.shootCooldownCurrentLevel;
+            upgradePrice = gameDataControllerScript.towersData [currentTower].mainGameData.stats.shootCooldownLevels[currentUpgradeLevel+1].price;
+            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text += upgradePrice.ToString();
+
+            upgradeStats.healthButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade: ";
+            currentUpgradeLevel = gameDataControllerScript.towersData [currentTower].mainGameData.stats.healthCurrentLevel;
+            upgradePrice = gameDataControllerScript.towersData [currentTower].mainGameData.stats.healthLevels[currentUpgradeLevel+1].price;
+            upgradeStats.healthButton.transform.Find("Label").GetComponent<UILabel>().text += upgradePrice.ToString();
 
             if(gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageCurrentLevel+1 >= gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageLevels.Length
                || knowledge_int < gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageLevels[gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageCurrentLevel+1].price)
@@ -141,7 +277,7 @@ public class UpgradeController : MonoBehaviour
             {
                 if(gameDataControllerScript.towersData [currentTower].mainGameData.stats.healthCurrentLevel+1 >= gameDataControllerScript.towersData [currentTower].mainGameData.stats.healthLevels.Length)
                 {
-                    upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "MAX";
+                    upgradeStats.healthButton.transform.Find("Label").GetComponent<UILabel>().text = "MAX";
                 }
                 upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
             }
@@ -152,11 +288,15 @@ public class UpgradeController : MonoBehaviour
         } 
         else
         {
-            upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-
             towerNameLabel.text = "Locked";
+            upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = damageButtonString;
+            upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Locked";
+            upgradeStats.healthButton.transform.Find("Label").GetComponent<UILabel>().text = "Locked";
+
+            upgradeStats.healthAdditionLabel.text = "";
+            upgradeStats.cooldownAdditionLabel.text = "";
+            upgradeStats.damageAdditionLabel.text = "";
+
 
             upgradeStats.damageLabel.text += "NaN";
             upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = false;
@@ -166,7 +306,7 @@ public class UpgradeController : MonoBehaviour
 
             upgradeStats.healthLabel.text += "NaN";
             upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
-        }
+        }*/
     }
 
     void ButtonLeft()
@@ -196,40 +336,6 @@ public class UpgradeController : MonoBehaviour
         Application.LoadLevel("MainMenu");
     }
 
-    void OnHoverDamage()
-    {
-        string result = "Error";
-
-        int currentUpgradeLevel = gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageCurrentLevel;
-        int numberOfLevels = gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageLevels.Length;
-        
-        if(currentUpgradeLevel+1 >= numberOfLevels)
-        {
-            result = "MAX";
-        }
-        else
-        {
-            float upgradePrice = gameDataControllerScript.towersData [currentTower].mainGameData.stats.damageLevels[currentUpgradeLevel+1].price;
-            result = "Price: " + upgradePrice.ToString();
-
-            float additionalDamage = gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalDamage();
-            upgradeStats.damageAdditionLabel.text = "";
-            if(additionalDamage > 0)
-            {
-                upgradeStats.damageAdditionLabel.text += "+";
-            }
-            upgradeStats.damageAdditionLabel.text += additionalDamage.ToString();
-        }
-
-        upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = result;
-    }
-
-    void OffHoverDamage()
-    {
-        upgradeStats.damageButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-        upgradeStats.damageAdditionLabel.text = "";
-    }
-
     void ButtonDamage()
     {
         TowerDefenseStats stats = gameDataControllerScript.towersData [currentTower].mainGameData.stats;
@@ -254,42 +360,6 @@ public class UpgradeController : MonoBehaviour
         }
     }
 
-    void OnHoverHealth()
-    {
-        string result = "Error";
-        
-        int nextUpgradeLevel = gameDataControllerScript.towersData [currentTower].mainGameData.stats.healthCurrentLevel+1;
-        int numberOfLevels = gameDataControllerScript.towersData [currentTower].mainGameData.stats.healthLevels.Length;
-        
-        if(nextUpgradeLevel >= numberOfLevels)
-        {
-            result = "MAX";
-        }
-        else
-        {
-            float upgradePrice = gameDataControllerScript.towersData [currentTower].mainGameData.stats.healthLevels[nextUpgradeLevel].price;
-            result = "Price: " + upgradePrice.ToString();
-
-            float additionalHealth = gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalHealth();
-            upgradeStats.healthAdditionLabel.text = "";
-            if(additionalHealth > 0)
-            {
-                upgradeStats.healthAdditionLabel.text += "+";
-            }
-            upgradeStats.healthAdditionLabel.text += additionalHealth.ToString();
-            
-            //upgradeStats.healthAdditionLabel.text = "+" + gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalHealth().ToString();
-        }
-        
-        upgradeStats.healthButton.transform.Find("Label").GetComponent<UILabel>().text = result;
-    }
-
-    void OffHoverHealth()
-    {
-        upgradeStats.healthButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-        upgradeStats.healthAdditionLabel.text = "";
-    }
-
     void ButtonHealth()
     {
         TowerDefenseStats stats = gameDataControllerScript.towersData [currentTower].mainGameData.stats;
@@ -311,42 +381,6 @@ public class UpgradeController : MonoBehaviour
             
             UpdateGUI();
         }
-    }
-
-    void OnHoverCooldown()
-    {
-        string result = "Error";
-
-        int nextUpgradeLevel = gameDataControllerScript.towersData [currentTower].mainGameData.stats.shootCooldownCurrentLevel + 1;
-        int numberOfLevels = gameDataControllerScript.towersData [currentTower].mainGameData.stats.shootCooldownLevels.Length;
-        
-        if(nextUpgradeLevel >= numberOfLevels)
-        {
-            result = "MAX";
-        }
-        else
-        {
-            float upgradePrice = gameDataControllerScript.towersData [currentTower].mainGameData.stats.shootCooldownLevels[nextUpgradeLevel].price;
-            result = "Price: " + upgradePrice.ToString();
-
-            float additionalCooldown = gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalShootCooldown();
-            upgradeStats.cooldownAdditionLabel.text = "";
-            if(additionalCooldown > 0)
-            {
-                upgradeStats.cooldownAdditionLabel.text += "+";
-            }
-            upgradeStats.cooldownAdditionLabel.text += additionalCooldown.ToString();
-
-            //upgradeStats.cooldownAdditionLabel.text = "+" + gameDataControllerScript.towersData [currentTower].mainGameData.stats.GetAdditionalShootCooldown().ToString();
-        }
-        
-        upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = result;
-    }
-
-    void OffHoverCooldown()
-    {
-        upgradeStats.cooldownButton.transform.Find("Label").GetComponent<UILabel>().text = "Upgrade";
-        upgradeStats.cooldownAdditionLabel.text = "";
     }
 
     void ButtonCooldown()

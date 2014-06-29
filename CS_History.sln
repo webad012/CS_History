@@ -5,6 +5,8 @@ Project("{EADCCBBC-CC25-E80B-CDB3-1E3D97D13A8F}") = "CS_History", "Assembly-CSha
 EndProject
 Project("{EADCCBBC-CC25-E80B-CDB3-1E3D97D13A8F}") = "CS_History", "Assembly-CSharp-Editor.csproj", "{EE561212-23B0-F5E4-7681-27A67EE77542}"
 EndProject
+Project("{EADCCBBC-CC25-E80B-CDB3-1E3D97D13A8F}") = "CS_History", "Assembly-UnityScript-firstpass.unityproj", "{C139E134-3ECD-2F9D-BB34-0C24D7F47217}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +21,15 @@ Global
 		{EE561212-23B0-F5E4-7681-27A67EE77542}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE561212-23B0-F5E4-7681-27A67EE77542}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE561212-23B0-F5E4-7681-27A67EE77542}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C139E134-3ECD-2F9D-BB34-0C24D7F47217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C139E134-3ECD-2F9D-BB34-0C24D7F47217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C139E134-3ECD-2F9D-BB34-0C24D7F47217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C139E134-3ECD-2F9D-BB34-0C24D7F47217}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																																																																																																																																																																																								GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																																																																																																																																																																																																		GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

@@ -18,12 +18,16 @@ public class StaticTexts
         "and gain knowledge needed for next level",
         "Our story begin in ancient Sumeria.", 
         "The abacus\nthe first known calculator", 
-        "Was probably invented by the Babylonians as an aid to simple arithmetic around this time period", 
-        "This laid the foundations for positional notation and later computing developments"
+        "Was probably invented by the Babylonians as an aid to simple arithmetic around this time period.", 
+        "This laid the foundations for positional notation and later computing developments.",
+        "Your objective is to create requested numbers using abacus."
     };
-    static private string[] storyLevel2 = {"Binary number system", 
+    static private string[] storyLevel2 = {
+        "Binary number system", 
         "Described by Indian mathematician/scholar/musician Pingala", 
-        "Now used in the design of essentially all modern computing equipment"};
+        "Now used in the design of essentially all modern computing equipment",
+        "Your objective is to create requested numbers using binary system."
+    };
     public List<string[]> storyTexts = new List<string[]>(){storyLevel1, storyLevel2};
     
     protected StaticTexts(){}
