@@ -10,10 +10,10 @@ public class BinaryNumberController : MonoBehaviour
     private GUIText numTextMain;
     private GUIText numTextShade;
 
-    private bool showTooltip = false;
-    private GUIStyle guiStyleFore;
-    private GUIStyle guiStyleBack;
-    private string toolTipText;
+    //private bool showTooltip = false;
+    //private GUIStyle guiStyleFore;
+    //private GUIStyle guiStyleBack;
+    //private string toolTipText;
         
     private StoryController sc;
     
@@ -27,10 +27,10 @@ public class BinaryNumberController : MonoBehaviour
         
         gameObject.name = "Number_" + orderNum.ToString();
         numValue = (int)Mathf.Pow(2, orderNum);
-        SetTooltip();
+        //SetTooltip();
     }
 
-    void OnGUI()
+    /*void OnGUI()
     //void Update()
     {
         if (showTooltip)
@@ -41,9 +41,9 @@ public class BinaryNumberController : MonoBehaviour
             GUI.Label (new Rect (x-149,y+40,300,60), toolTipText, guiStyleBack);
             GUI.Label (new Rect (x-150,y+40,300,60), toolTipText, guiStyleFore);
         }
-    }
+    }*/
 
-    void OnMouseEnter ()
+    /*void OnMouseEnter ()
     {
         showTooltip = true;
     }
@@ -51,7 +51,7 @@ public class BinaryNumberController : MonoBehaviour
     void OnMouseExit ()
     {
         showTooltip = false;
-    }
+    }*/
     
     void OnMouseDown()
     {
@@ -73,7 +73,7 @@ public class BinaryNumberController : MonoBehaviour
         numTextShade.text = displayNumString;
     }
 
-    void SetTooltip()
+    /*void SetTooltip()
     {
         guiStyleFore = new GUIStyle();
         guiStyleFore.normal.textColor = Color.white;  
@@ -85,5 +85,5 @@ public class BinaryNumberController : MonoBehaviour
         guiStyleBack.wordWrap = true;
     
         toolTipText = numValue.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
-    }
+    }*/
 }

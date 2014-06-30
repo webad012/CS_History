@@ -119,9 +119,6 @@
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>D:/Projects/CS_History/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
- <Reference Include="Editor.ReorderableList">
- <HintPath>D:/Projects/CS_History/Assets/Rotorz/Reorderable List Field/Editor/Editor.ReorderableList.dll</HintPath>
- </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>

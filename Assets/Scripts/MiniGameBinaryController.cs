@@ -11,13 +11,13 @@ public class MiniGameBinaryController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        float posX = 0.7f;
+        float posX = 0.8f;
         for (int i=0; i<10; i++)
         {
             GameObject numberObject = (GameObject)Instantiate(numberPrefab, new Vector3(posX, 0.5f, 0f), Quaternion.identity);
             numberObject.transform.parent = gameObject.transform;
             numberObject.GetComponent<BinaryNumberController>().orderNum = i;
-            posX -= 0.05f;
+            posX -= 0.07f;
         }
 	}
 }

@@ -13,9 +13,6 @@ public class LevelsSelectorController : MonoBehaviour
     private int currentLevel = 0;
     private int lastUnlockedStory;
 
-    //private float outLeftX;
-    //private float outRightX;
-
     private GameDataController gameDataControllerScript;
 
     private List<GameObject> levelObjects;

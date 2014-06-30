@@ -12,6 +12,7 @@ public class StoryController : MonoBehaviour
 
     public GameObject gamePausedWindow;
     private bool gamePaused = false;
+    private Vector3 gamePausedTopPos;
 
     private int score = 0;
     private int scoreRequired = 0;
@@ -28,6 +29,8 @@ public class StoryController : MonoBehaviour
 
 	void Start () 
     {
+        gamePausedTopPos = new Vector3(0, Screen.height, 0);
+        gamePausedWindow.transform.localPosition = gamePausedTopPos;
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
         miniGameData = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData[levelSelected].miniGameData;
 
@@ -51,7 +54,7 @@ public class StoryController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 gamePaused = false;
-                TweenPosition.Begin(gamePausedWindow, 0.25f, new Vector3(0, 500, 0));
+                TweenPosition.Begin(gamePausedWindow, 0.25f, gamePausedTopPos);
             }
             
         } else

@@ -15,6 +15,7 @@ public class TowerDefenseController : MonoBehaviour
     public GameObject gameWonWindow;
     private bool wonWindowDisplayed = false;
     public GameObject gamePausedWindow;
+    private Vector3 windowsTopPos;
 
     public UILabel knowledgeLabel;
     public UILabel knowledgeRequiredLabel;
@@ -43,6 +44,11 @@ public class TowerDefenseController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        windowsTopPos = new Vector3(0, Screen.height, 0);
+        gameLostWindow.transform.localPosition = windowsTopPos;
+        gameWonWindow.transform.localPosition = windowsTopPos;
+        gamePausedWindow.transform.localPosition = windowsTopPos;
+
         coinsRealDestination = new Vector3(-Camera.main.WorldToScreenPoint(coinDestination.transform.position).x,
                                               Camera.main.WorldToScreenPoint(coinDestination.transform.parent.position).y,
                                               0f);
@@ -65,6 +71,8 @@ public class TowerDefenseController : MonoBehaviour
         PlayerPrefs.SetInt("PlayerCoins", gameDataControllerScript.levels [levelSelected].startingCoins);
         coinsCooldown = gameDataControllerScript.levels [levelSelected].house.coinsTimeout;
         knowledgeCooldown = gameDataControllerScript.levels [levelSelected].house.knowledgeTimeout;
+
+        Camera.main.backgroundColor = gameDataControllerScript.levels [levelSelected].cameraBackground;
 	}
 	
 	// Update is called once per frame
@@ -100,7 +108,7 @@ public class TowerDefenseController : MonoBehaviour
                 {
                     Time.timeScale = 1;
                     gamePaused = false;
-                    TweenPosition.Begin(gamePausedWindow, 0.25f, new Vector3(0, 500, 0));
+                    TweenPosition.Begin(gamePausedWindow, 0.25f, windowsTopPos);
                 }
 
             }

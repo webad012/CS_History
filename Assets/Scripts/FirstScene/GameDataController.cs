@@ -34,7 +34,7 @@ public class TowerDefenseStats
 
     public float GetHealth()
     {
-        return baseHealth * healthLevels [healthCurrentLevel].multiplicator;
+        return (float)System.Math.Round(baseHealth, 1) * healthLevels [healthCurrentLevel].multiplicator;
     }
     public string GetAdditionalHealthString()
     {
@@ -44,8 +44,9 @@ public class TowerDefenseStats
         }
 
         string result_string = "";
-        float result_float = baseHealth * (healthLevels [healthCurrentLevel + 1].multiplicator - healthLevels [healthCurrentLevel].multiplicator);
-
+        float result_float = (float)System.Math.Round(baseHealth, 1) * (healthLevels [healthCurrentLevel + 1].multiplicator - healthLevels [healthCurrentLevel].multiplicator);
+        result_float = (float)System.Math.Round(result_float, 1);
+                          
         if (result_float >= 0)
         {
             result_string = "+";
@@ -57,16 +58,22 @@ public class TowerDefenseStats
     }
     public float GetAdditionalHealthFloat()
     {
+        float result;
+
         if (healthCurrentLevel + 1 >= healthLevels.Length)
         {
-            return -1f;
+            result = -1f;
+        }
+        else
+        {
+            result = (float)System.Math.Round(baseHealth, 1) * (healthLevels [healthCurrentLevel + 1].multiplicator - healthLevels [healthCurrentLevel].multiplicator);
         }
         
-        return baseHealth * (healthLevels [healthCurrentLevel + 1].multiplicator - healthLevels [healthCurrentLevel].multiplicator);
+        return (float)System.Math.Round(result, 1);
     }
     public float GetShootCooldown()
     {
-        return baseShootCooldown * shootCooldownLevels [shootCooldownCurrentLevel].multiplicator;
+        return (float)System.Math.Round(baseShootCooldown, 1) * shootCooldownLevels [shootCooldownCurrentLevel].multiplicator;
     }
     public string GetAdditionalShootCooldownString()
     {
@@ -76,8 +83,9 @@ public class TowerDefenseStats
         }
 
         string result_string = "";
-        float result_float = baseShootCooldown * (shootCooldownLevels [shootCooldownCurrentLevel + 1].multiplicator - shootCooldownLevels [shootCooldownCurrentLevel].multiplicator);
-        
+        float result_float = (float)System.Math.Round(baseShootCooldown, 1) * (shootCooldownLevels [shootCooldownCurrentLevel + 1].multiplicator - shootCooldownLevels [shootCooldownCurrentLevel].multiplicator);
+        result_float = (float)System.Math.Round(result_float, 1);
+
         if (result_float >= 0)
         {
             result_string = "+";
@@ -89,16 +97,22 @@ public class TowerDefenseStats
     }
     public float GetAdditionalShootCooldownFloat()
     {
+        float result;
+
         if (shootCooldownCurrentLevel + 1 >= shootCooldownLevels.Length)
         {
-            return -1f;
+            result = -1f;
         }
-        
-        return baseShootCooldown * (shootCooldownLevels [shootCooldownCurrentLevel + 1].multiplicator - shootCooldownLevels [shootCooldownCurrentLevel].multiplicator);
+        else
+        {
+            result = (float)System.Math.Round(baseShootCooldown, 1) * (shootCooldownLevels [shootCooldownCurrentLevel + 1].multiplicator - shootCooldownLevels [shootCooldownCurrentLevel].multiplicator);
+        }
+
+        return (float)System.Math.Round(result, 1);
     }
     public float GetDamage()
     {
-        return baseDamage * damageLevels [damageCurrentLevel].multiplicator;
+        return (float)System.Math.Round(baseDamage, 1) * damageLevels [damageCurrentLevel].multiplicator;
     }
     public string GetAdditionalDamageString()
     {
@@ -108,8 +122,9 @@ public class TowerDefenseStats
         }
 
         string result_string = "";
-        float result_float = baseDamage * (damageLevels [damageCurrentLevel + 1].multiplicator - damageLevels [damageCurrentLevel].multiplicator);
-        
+        float result_float = (float)System.Math.Round(baseDamage, 1) * (damageLevels [damageCurrentLevel + 1].multiplicator - damageLevels [damageCurrentLevel].multiplicator);
+        result_float = (float)System.Math.Round(result_float, 1);
+
         if (result_float >= 0)
         {
             result_string = "+";
@@ -121,12 +136,18 @@ public class TowerDefenseStats
     }
     public float GetAdditionalDamageFloat()
     {
+        float result;
+
         if (damageCurrentLevel + 1 >= damageLevels.Length)
         {
-            return -1f;
+            result = -1f;
         }
-        
-        return baseDamage * (damageLevels [damageCurrentLevel + 1].multiplicator - damageLevels [damageCurrentLevel].multiplicator);
+        else
+        {
+            result = (float)System.Math.Round(baseDamage, 1) * (damageLevels [damageCurrentLevel + 1].multiplicator - damageLevels [damageCurrentLevel].multiplicator);
+        }
+
+        return (float)System.Math.Round(result, 1);
     }
 }
 
@@ -181,11 +202,13 @@ public class EnemyData
 [System.Serializable]
 public class WaveData
 {
-    public float startCooldown;
-    public float spawnCooldown;
+    public float initialCooldown;
+    public float newWaveCooldown;
+    //public float spawnCooldown;
     public int numberOfEnemies;
     public EnemyData[] enemies;
     public float multiplicator;
+    public int enemyNumIncrease;
 }
 
 [System.Serializable]
@@ -198,8 +221,8 @@ public class Level
     public int knowledgeRequired;
     public int startingCoins;
     public House house;
-    //public EnemyData[] enemies;
     public Texture groundTexture;
+    public Color cameraBackground;
     public WaveData wavesData;
 }
 
