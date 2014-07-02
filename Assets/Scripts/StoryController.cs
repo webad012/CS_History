@@ -37,7 +37,6 @@ public class StoryController : MonoBehaviour
         continueButton.SetActive(false);
         score = 0;
         storyTexts = StaticTexts.Instance.storyTexts[levelSelected];
-        //storyTexts = miniGameData.storyIntroTexts;
         storyIndex = 0;
         currentRequiredResult = 0;
         scoreLabel.text = "";
@@ -117,15 +116,12 @@ public class StoryController : MonoBehaviour
         {
             currentRequiredResult++;
 
-            //if(currentRequiredResult == storySpec[levelSelected].requiredResultRanges.Length)
             if(currentRequiredResult == miniGameData.requiredResultRanges.Length)
             {
                 minigameFinished = true;
             }
-            else
-            {
-                ResetMinigame();
-            }
+            
+            ResetMinigame();
         }
 
         UpdateGui();
@@ -157,13 +153,9 @@ public class StoryController : MonoBehaviour
         }
 
         score = 0;
-        //scoreRequired = (int)Random.Range(storySpec[levelSelected].requiredResultRanges[currentRequiredResult].x,
-        //                                  storySpec[levelSelected].requiredResultRanges[currentRequiredResult].y);
         scoreRequired = (int)Random.Range(miniGameData.requiredResultRanges[currentRequiredResult].x,
                                           miniGameData.requiredResultRanges[currentRequiredResult].y);
-        //PlayObject = (GameObject)Instantiate(storySpec[levelSelected].ObjectToPlayWith, 
-        PlayObject = (GameObject)Instantiate(miniGameData.ObjectToPlayWith, 
-                                             new Vector3(0f, 0f, 0f), Quaternion.identity);
+        PlayObject = (GameObject)Instantiate(miniGameData.ObjectToPlayWith, miniGameData.objectPosition, Quaternion.identity);
     }
 
     public void ButtonMainMenu()

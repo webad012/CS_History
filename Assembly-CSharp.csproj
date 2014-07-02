@@ -195,6 +195,8 @@
      <Compile Include="Assets\Scripts\OptionsController.cs" />
      <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
      <Compile Include="Assets\Scripts\ProjectileBinaryController.cs" />
+     <Compile Include="Assets\Scripts\SouthPointingChariontDraggableController.cs" />
+     <Compile Include="Assets\Scripts\SouthPointingChariotMinigameController.cs" />
      <Compile Include="Assets\Scripts\SplashScreenController.cs" />
      <Compile Include="Assets\Scripts\StaticTexts.cs" />
      <Compile Include="Assets\Scripts\StoryController.cs" />

@@ -12,19 +12,7 @@ public class SplashScreenController : MonoBehaviour
 	void Start () 
     {
         transform.localScale = minScale;
-        //StartCoroutine(FadeIn());
     }
-    
-    /*IEnumerator FadeIn()
-    {
-
-        yield return null;
-    }
-
-    IEnumerator FadeOut()
-    {
-        yield return null;
-    }*/
 	
 	// Update is called once per frame
 	void Update () 

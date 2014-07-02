@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Projectile : MonoBehaviour {
-
+public class Projectile : MonoBehaviour 
+{
+    public string projectileName;
 	public float movementSpeed;
 	public float damage;
     public GameObject explosion;
@@ -14,7 +15,8 @@ public class Projectile : MonoBehaviour {
 	{
 		initPos = transform.position;
 
-        if (transform.Find("One").gameObject != null)
+        //if (transform.Find("One").gameObject != null)
+        if (projectileName == "BinaryProjectile")
         {
             isBinaryProjectile = true;
         }

@@ -23,12 +23,18 @@ public class StaticTexts
         "Your objective is to create requested numbers using abacus."
     };
     static private string[] storyLevel2 = {
+        "The south-pointing chariot", 
+        "Invented in ancient China", 
+        "It was the first known geared mechanism to use a differential gear.",
+        "The chariot was a two-wheeled vehicle"
+    };
+    static private string[] storyLevel3 = {
         "Binary number system", 
         "Described by Indian mathematician/scholar/musician Pingala", 
         "Now used in the design of essentially all modern computing equipment",
         "Your objective is to create requested numbers using binary system."
     };
-    public List<string[]> storyTexts = new List<string[]>(){storyLevel1, storyLevel2};
+    public List<string[]> storyTexts = new List<string[]>(){storyLevel1, storyLevel2, storyLevel3};
     
     protected StaticTexts(){}
     private static StaticTexts _instance = null;

@@ -1,8 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SplashScreenController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Upgrade\UpgradeController.cs">
     <Files>
-      <File FileName="Assets\Scripts\SplashScreenController.cs" Line="39" Column="51" />
+      <File FileName="Assets\Scripts\SouthPointingChariontDraggableController.cs" Line="54" Column="131" />
+      <File FileName="Assets\Scripts\FirstScene\GameDataController.cs" Line="9" Column="5" />
+      <File FileName="Assets\Scripts\SouthPointingChariotMinigameController.cs" Line="36" Column="28" />
+      <File FileName="Assets\Scripts\StaticTexts.cs" Line="29" Column="48" />
+      <File FileName="Assets\Scripts\StoryController.cs" Line="121" Column="41" />
+      <File FileName="Assets\Scripts\MainGame\Projectile.cs" Line="19" Column="27" />
+      <File FileName="Assets\Scripts\Upgrade\UpgradeController.cs" Line="91" Column="10" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

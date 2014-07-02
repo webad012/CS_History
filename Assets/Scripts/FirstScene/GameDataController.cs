@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class MiniGameData
 {
     public GameObject ObjectToPlayWith;
+    public Vector3 objectPosition;
+    //public Quaternion objectRotation;
     public Vector2[] requiredResultRanges;
     public Texture backgroundTexture;
 }

@@ -49,6 +49,10 @@ public class UpgradeController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = false;
+        upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = false;
+        upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
+
         upgradeStats.healthAdditionLabel.text = "";
         upgradeStats.damageAdditionLabel.text = "";
         upgradeStats.cooldownAdditionLabel.text = "";
@@ -85,8 +89,6 @@ public class UpgradeController : MonoBehaviour
             childTower.name = gameDataControllerScript.towersData[i].towerName;
             towerObjects.Add(childTower);
         }
-
-        //UpdateGUI();
 	}
 
     void Update()
