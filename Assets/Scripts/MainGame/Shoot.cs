@@ -10,13 +10,15 @@ public class Shoot : MonoBehaviour
 
     private float cd;
     private TowerBase towerBaseScript;
+    private Transform shootSpawn;
 
 	// Use this for initialization
 	void Start () 
     {
-        cd = cooldown;
+        RestartCooldown();
 
         towerBaseScript = gameObject.GetComponent<TowerBase>();
+        shootSpawn = gameObject.transform.Find("ShootSpawn").gameObject.transform;
 	}
 	
 	// Update is called once per frame
@@ -31,7 +33,7 @@ public class Shoot : MonoBehaviour
         {
             if (cd <= 0)
             {
-                cd = cooldown;
+                RestartCooldown();
 
                 GameObject projectile;
 
@@ -43,7 +45,7 @@ public class Shoot : MonoBehaviour
                 }
                 else
                 {
-                    projectile = (GameObject)Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+                    projectile = (GameObject)Instantiate(projectilePrefab, shootSpawn.position, Quaternion.identity);
 
                     if(projectile.GetComponent<Projectile>() != null)
                     {
@@ -57,4 +59,9 @@ public class Shoot : MonoBehaviour
             }
         }
 	}
+
+    void RestartCooldown()
+    {
+        cd = cooldown + Random.Range(-0.2f, 0.2f);
+    }
 }

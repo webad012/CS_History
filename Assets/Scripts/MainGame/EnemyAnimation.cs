@@ -8,8 +8,8 @@ public class EnemyAnimation : MonoBehaviour
     public string movingAnimation;
     public string damagingAnimation;
 
-    private bool movePlaying = false;
-    private bool damagePlaying = false;
+    //private bool movePlaying = false;
+    public bool damagePlaying = false;
 
     private EnemyMove enemyMoveScript;
     private Animation animationScript;
@@ -26,14 +26,28 @@ public class EnemyAnimation : MonoBehaviour
     {
         if (enemyMoveScript.canMove)
         {
-            if(!movePlaying)
+            //if(!movePlaying)
+            //if(!animationScript.IsPlaying(movingAnimation) && !animationScript.IsPlaying(damagingAnimation))
+            if (!animationScript.isPlaying)
             {
-                movePlaying = true;
-                damagePlaying = false;
+                if (damagePlaying)
+                {
+                    damagePlaying = false;
+                }
+                //movePlaying = true;
+                //damagePlaying = false;
+                animationScript.wrapMode = WrapMode.Loop;
                 animationScript.Play(movingAnimation);
             }
-        } 
+        }
         else
+        {
+            if(animationScript.IsPlaying(movingAnimation))
+            {
+                animationScript.Stop(movingAnimation);
+            }
+        }
+        /*else
         {
             if(!damagePlaying)
             {
@@ -41,6 +55,15 @@ public class EnemyAnimation : MonoBehaviour
                 movePlaying = false;
                 animationScript.Play(damagingAnimation);
             }
-        }
+        }*/
 	}
+
+    public void PlayDamageAnimation()
+    {
+        //if(!animationScript.IsPlaying(damagingAnimation))
+        //{
+        animationScript.wrapMode = WrapMode.Once;
+        animationScript.Play(damagingAnimation);
+        //}
+    }
 }

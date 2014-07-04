@@ -15,6 +15,7 @@ public class FirstSceneController : MonoBehaviour
      * int PlayerCoins
      * int LevelUnlocked
      * int lastUnlockedStory
+     * int SelectedLanguage
      * 
      */
 

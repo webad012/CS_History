@@ -103,9 +103,9 @@ public class UpgradeController : MonoBehaviour
             knowledgeString = knowledge_int.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
         }
 
-        damageInfoString = "Tower damage: ";
-        cooldowInfoString = "Tower cooldown: ";
-        healthInfoString = "Tower health: ";
+        damageInfoString = StaticTexts.Instance.language_Damage[PlayerPrefs.GetInt("SelectedLanguage", 0)] + ": ";
+        cooldowInfoString = StaticTexts.Instance.language_Cooldown[PlayerPrefs.GetInt("SelectedLanguage", 0)] + ": ";
+        healthInfoString = StaticTexts.Instance.language_Health[PlayerPrefs.GetInt("SelectedLanguage", 0)] + ": ";
 
         if (gameDataControllerScript.towersData [currentTower].upgradeData.isUnlocked)
         {
@@ -124,7 +124,7 @@ public class UpgradeController : MonoBehaviour
             if(towerStats.damageCurrentLevel+1 >= towerStats.damageLevels.Length)
             {
                 upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = false;
-                damageButtonString = "MAX";
+                damageButtonString = StaticTexts.Instance.language_Max[PlayerPrefs.GetInt("SelectedLanguage", 0)];
             }
             else
             {
@@ -136,13 +136,13 @@ public class UpgradeController : MonoBehaviour
                 {
                     upgradeStats.damageButton.GetComponent<UIButton>().isEnabled = true;
                 }
-                damageButtonString = "Upgrade: " + towerStats.damageLevels[towerStats.damageCurrentLevel+1].price.ToString();
+                damageButtonString = StaticTexts.Instance.language_Upgrade[PlayerPrefs.GetInt("SelectedLanguage", 0)] + ": " + towerStats.damageLevels[towerStats.damageCurrentLevel+1].price.ToString();
             }
 
             if(towerStats.shootCooldownCurrentLevel+1 >= towerStats.shootCooldownLevels.Length)
             {
                 upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = false;
-                cooldowButtonString = "MAX";
+                cooldowButtonString = StaticTexts.Instance.language_Max[PlayerPrefs.GetInt("SelectedLanguage", 0)];
             }
             else
             {
@@ -154,13 +154,13 @@ public class UpgradeController : MonoBehaviour
                 {
                     upgradeStats.cooldownButton.GetComponent<UIButton>().isEnabled = true;
                 }
-                cooldowButtonString = "Upgrade: " + towerStats.shootCooldownLevels[towerStats.shootCooldownCurrentLevel+1].price.ToString();
+                cooldowButtonString = StaticTexts.Instance.language_Upgrade[PlayerPrefs.GetInt("SelectedLanguage", 0)] + ": " + towerStats.shootCooldownLevels[towerStats.shootCooldownCurrentLevel+1].price.ToString();
             }
 
             if(towerStats.healthCurrentLevel+1 >= towerStats.healthLevels.Length)
             {
                 upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = false;
-                healthButtonString = "MAX";
+                healthButtonString = StaticTexts.Instance.language_Max[PlayerPrefs.GetInt("SelectedLanguage", 0)];
             }
             else
             {
@@ -172,20 +172,20 @@ public class UpgradeController : MonoBehaviour
                 {
                     upgradeStats.healthButton.GetComponent<UIButton>().isEnabled = true;
                 }
-                healthButtonString = "Upgrade: " + towerStats.healthLevels[towerStats.healthCurrentLevel+1].price.ToString();
+                healthButtonString = StaticTexts.Instance.language_Upgrade[PlayerPrefs.GetInt("SelectedLanguage", 0)] + ": " + towerStats.healthLevels[towerStats.healthCurrentLevel+1].price.ToString();
             }
         }
         else
         {
-            towerName = "Locked";
+            towerName = StaticTexts.Instance.language_Locked[PlayerPrefs.GetInt("SelectedLanguage", 0)];
             
-            damageInfoString += "NaN";
-            cooldowInfoString += "NaN";
-            healthInfoString += "NaN";
+            damageInfoString += StaticTexts.Instance.language_NaN[PlayerPrefs.GetInt("SelectedLanguage", 0)];
+            cooldowInfoString += StaticTexts.Instance.language_NaN[PlayerPrefs.GetInt("SelectedLanguage", 0)];
+            healthInfoString += StaticTexts.Instance.language_NaN[PlayerPrefs.GetInt("SelectedLanguage", 0)];
 
-            damageButtonString = "Locked";
-            cooldowButtonString = "Locked";
-            healthButtonString = "Locked";
+            damageButtonString = StaticTexts.Instance.language_Locked[PlayerPrefs.GetInt("SelectedLanguage", 0)];
+            cooldowButtonString = StaticTexts.Instance.language_Locked[PlayerPrefs.GetInt("SelectedLanguage", 0)];
+            healthButtonString = StaticTexts.Instance.language_Locked[PlayerPrefs.GetInt("SelectedLanguage", 0)];
             
             damageAdditionString = "";
             cooldowAdditionString = "";

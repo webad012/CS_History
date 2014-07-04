@@ -27,6 +27,7 @@ public class TowerDefenseController : MonoBehaviour
     // sprinkle coin
     public GameObject coinDestination;
     public GameObject coinIconPrefab;
+    public AudioClip coinSound;
 
     // sprinkle knowledge
     public GameObject knowledgeDestination;
@@ -213,6 +214,7 @@ public class TowerDefenseController : MonoBehaviour
             GameObject coinObject = NGUITools.AddChild(sprinkleParentAnchor, coinIconPrefab);
             coinObject.transform.localPosition = sourcePos;
             TweenPosition.Begin(coinObject, 0.5f, coinsRealDestination);
+            AudioSource.PlayClipAtPoint(coinSound, sourceObjectPos);
 
             yield return new WaitForSeconds(0.2f);
         }

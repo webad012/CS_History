@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 using System.Collections;
 
 public class Death : MonoBehaviour 
@@ -7,13 +7,10 @@ public class Death : MonoBehaviour
 	private Health hscr;
 	private EnemyStats esscr;
     private TowerDefenseController tdcscr;
-    //private Camera mainCamera;
 
 	// Use this for initialization
 	void Start () 
 	{
-        //mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-
 		hscr = gameObject.GetComponent<Health> ();
         tdcscr = GameObject.Find("TowerDefenseController").GetComponent<TowerDefenseController>();
 
@@ -45,4 +42,4 @@ public class Death : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-}
+}*/

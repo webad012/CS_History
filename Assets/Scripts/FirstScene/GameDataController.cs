@@ -3,13 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
+public class StoryImages
+{
+    public int position;
+    public string spriteName;
+}
+
+[System.Serializable]
 public class MiniGameData
 {
     public GameObject ObjectToPlayWith;
     public Vector3 objectPosition;
-    //public Quaternion objectRotation;
     public Vector2[] requiredResultRanges;
     public Texture backgroundTexture;
+    public StoryImages[] storyImages;
 }
 
 [System.Serializable]
@@ -42,7 +49,7 @@ public class TowerDefenseStats
     {
         if (healthCurrentLevel + 1 >= healthLevels.Length)
         {
-            return "-1";
+            return "";
         }
 
         string result_string = "";
@@ -81,7 +88,7 @@ public class TowerDefenseStats
     {
         if (shootCooldownCurrentLevel + 1 >= shootCooldownLevels.Length)
         {
-            return "-1";
+            return "";
         }
 
         string result_string = "";
@@ -120,7 +127,7 @@ public class TowerDefenseStats
     {
         if (damageCurrentLevel + 1 >= damageLevels.Length)
         {
-            return "-1";
+            return "";
         }
 
         string result_string = "";
@@ -199,6 +206,9 @@ public class EnemyData
     public int worth;
     public int damage;
     public float damageCooldown;
+    public AudioClip deathSound;
+    public AudioClip takeDamageSound;
+    public AudioClip dealDamageSound;
 }
 
 [System.Serializable]
@@ -228,10 +238,18 @@ public class Level
     public WaveData wavesData;
 }
 
+[System.Serializable]
+public class Language
+{
+    public string languageName;
+    public string spritename;
+}
+
 public class GameDataController : MonoBehaviour 
 {
     public TowerData[] towersData;
     public Level[] levels;
+    public Language[] languages;
     
     public bool canContinue = false;
 

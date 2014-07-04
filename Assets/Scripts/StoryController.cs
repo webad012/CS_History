@@ -9,6 +9,7 @@ public class StoryController : MonoBehaviour
     public GameObject background;
     public GameObject continueButton;
     public UILabel continueLabel;
+    public GameObject storyImageSprite;
 
     public GameObject gamePausedWindow;
     private bool gamePaused = false;
@@ -42,6 +43,7 @@ public class StoryController : MonoBehaviour
         scoreLabel.text = "";
         scoreRequiredLabel.text = "";
         background.renderer.material.mainTexture = miniGameData.backgroundTexture;
+        storyImageSprite.SetActive(false);
         UpdateGui();
 	}
 	
@@ -56,9 +58,14 @@ public class StoryController : MonoBehaviour
                 TweenPosition.Begin(gamePausedWindow, 0.25f, gamePausedTopPos);
             }
             
-        } else
+        } 
+        else
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                StoryLabelClicked();
+            }
+            else if (Input.GetKeyDown(KeyCode.W))
             {
                 PlayerPrefs.SetInt("lastUnlockedStory", levelSelected);
                 PlayerPrefs.SetInt("TowerUnlocked" + levelSelected.ToString(), 1);
@@ -66,8 +73,7 @@ public class StoryController : MonoBehaviour
 
                 Application.LoadLevel("TowerDefense");
             }
-
-            if(Input.GetKeyDown(KeyCode.Escape))
+            else if(Input.GetKeyDown(KeyCode.Escape))
             {
                 gamePaused = true;
                 TweenPosition.Begin(gamePausedWindow, 0.25f, Vector3.zero);
@@ -127,14 +133,25 @@ public class StoryController : MonoBehaviour
         UpdateGui();
     }
 
-    public void StoryLabelClicked(GameObject go)
+    public void StoryLabelClicked()
     {
         storyIndex++;
         if (storyIndex >= storyTexts.Length)
         {
-            go.SetActive(false);
+            storyLabel.gameObject.SetActive(false);
             minigameStarted = true;
             ResetMinigame();
+        }
+
+        storyImageSprite.SetActive(false);
+        for(int i=0; i<miniGameData.storyImages.Length; i++)
+        {
+            if(storyIndex == miniGameData.storyImages[i].position)
+            {
+                storyImageSprite.GetComponent<UISprite>().spriteName = miniGameData.storyImages[i].spriteName;
+                storyImageSprite.SetActive(true);
+                break;
+            }
         }
 
         UpdateGui();
@@ -153,8 +170,12 @@ public class StoryController : MonoBehaviour
         }
 
         score = 0;
-        scoreRequired = (int)Random.Range(miniGameData.requiredResultRanges[currentRequiredResult].x,
-                                          miniGameData.requiredResultRanges[currentRequiredResult].y);
+
+        if (!minigameFinished)
+        {
+            scoreRequired = (int)Random.Range(miniGameData.requiredResultRanges [currentRequiredResult].x,
+                                          miniGameData.requiredResultRanges [currentRequiredResult].y);
+        }
         PlayObject = (GameObject)Instantiate(miniGameData.ObjectToPlayWith, miniGameData.objectPosition, Quaternion.identity);
     }
 

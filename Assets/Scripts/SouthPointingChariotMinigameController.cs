@@ -13,7 +13,7 @@ public class SouthPointingChariotMinigameController : MonoBehaviour
 
     private Transform body;
     private Transform target;
-    private bool targetPositioned = false;
+    public bool targetPositioned = false;
 
     private StoryController sc;
     

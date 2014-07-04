@@ -2,14 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-/*[System.Serializable]
-public class Tower
-{
-    public GameObject towerPrefab;
-    public int price;
-    public UISprite buildButton;
-}*/
-
 public class SetTower : MonoBehaviour 
 {
     public int selectedTowerIndex = 0;
@@ -17,7 +9,9 @@ public class SetTower : MonoBehaviour
 
     public GameObject buildPanel;
     public GameObject buildButtonPrefab;
-    public int buildPosX = 30;
+    public Vector2 buildButtonSize;
+    public float buildPosX = 30f;
+    public float spaceBetweenButtons = 5f;
     public Vector2 buildPosY;
 
     public bool buildPanelOpen = false;
@@ -26,6 +20,7 @@ public class SetTower : MonoBehaviour
     public LayerMask placementLayerMask;
     
     private List<GameObject> towerBuildButtons;
+    private List<Vector3> towerBuildPositions;
 
     private Color onColor = new Color32 (220, 135, 30, 255);
     private Color offColor = new Color32 (150, 215, 250, 255);
@@ -33,12 +28,16 @@ public class SetTower : MonoBehaviour
 
     private GameDataController gameDataControllerScript;
 
+    private int towerCount;
+
 	// Use this for initialization
 	void Start () 
     {
+        towerCount = 0;
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 
         towerBuildButtons = new List<GameObject>();
+        towerBuildPositions = new List<Vector3>();
 
         int unlockedTowers = 0;
         for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
@@ -49,23 +48,61 @@ public class SetTower : MonoBehaviour
             }
         }
 
-        int tmp = unlockedTowers;
+        if(unlockedTowers % 2 == 0)
+        {
+            for(int i=0; i<unlockedTowers; i++)
+            {
+                Vector3 pos;
+                int sgn;
+                float valY;
+                if(i%2==0)
+                {
+                    sgn = 1;
+                }
+                else
+                {
+                    sgn = -1;
+                }
+                valY = sgn*((((i+2)/2)*(buildButtonSize.y/2)) + (spaceBetweenButtons/2));
+                pos = new Vector3(buildPosX, valY, 0f);
+                towerBuildPositions.Add(pos);
+            }
+        }
+        else
+        {
+            for(int i=0; i<unlockedTowers; i++)
+            {
+                Vector3 pos;
+                int sgn;
+                float valY;
+                if(i>0)
+                {
+                    if(i%2==0)
+                    {
+                        sgn = 1;
+                    }
+                    else
+                    {
+                        sgn = -1;
+                    }
+                    valY = sgn*(((i+1)/2)*buildButtonSize.y + spaceBetweenButtons);
+                }
+                else
+                {
+                    valY = 0;
+                }
+                pos = new Vector3(buildPosX, valY, 0f);
+                towerBuildPositions.Add(pos);
+            }
+        }
+
+        int tmp = 0;
         for (int i=0; i<gameDataControllerScript.towersData.Length; i++)
         {
             if(gameDataControllerScript.towersData[i].upgradeData.isUnlocked)
             {
-                Vector3 local_pos = Vector3.zero;
-                if(unlockedTowers == 1)
-                {
-                    //Debug.Log(buildPosY.y - buildPosY.x);
-                    //Debug.Log((buildPosY.y - buildPosY.x)/2);
-                    local_pos = new Vector3(buildPosX, (buildPosY.y + buildPosY.x)/2, 0);
-                }
-                else if(unlockedTowers == 2)
-                {
-                    local_pos = new Vector3(buildPosX, buildPosY.x + ((tmp-1) * (buildPosY.y - buildPosY.x)), 0);
-                    tmp--;
-                }
+                Vector3 local_pos = towerBuildPositions[tmp];
+                tmp++;
 
                 GameObject towerBuildButton = NGUITools.AddChild(buildPanel, buildButtonPrefab);
                 towerBuildButtons.Add(towerBuildButton);
@@ -98,10 +135,8 @@ public class SetTower : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        //if (Physics.Raycast(ray, out hit, 20))
         if (Physics.Raycast(ray, out hit, 1000, placementLayerMask))
         {
-            //Debug.Log(hit.transform.name);
             if (hit.transform.tag == "Tile")
             {
                 tile = hit.transform.gameObject;
@@ -132,11 +167,13 @@ public class SetTower : MonoBehaviour
                 GameObject newTower = (GameObject)Instantiate(gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.towerPrefab, 
                                                               pos, 
                                                               Quaternion.identity);
-                newTower.gameObject.GetComponent<Health>().health = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetHealth();
+                newTower.gameObject.GetComponent<Health>().startingHealth = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetHealth();
+                //Debug.Log("0 - " + newTower.gameObject.GetComponent<Health>().actualHealth.ToString());
                 newTower.gameObject.GetComponent<Shoot>().cooldown = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetShootCooldown();
                 newTower.gameObject.GetComponent<Shoot>().projectilePrefab = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.projectilePrefab;
                 newTower.gameObject.GetComponent<Shoot>().damage = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetDamage();
-
+                newTower.name = "Tower_" + towerCount.ToString();
+                towerCount++;
                 tileTakenScript.tower = newTower;
                 tileTakenScript.isTaken = true;
             }
