@@ -8,15 +8,14 @@ public class StoryController : MonoBehaviour
     public UILabel scoreRequiredLabel;
     public UILabel storyLabel;
     public GameObject background;
-    public GameObject continueButton;
-    public UILabel continueLabel;
+    //public GameObject continueButton;
+    //public UILabel continueLabel;
     public GameObject storyImageSprite;
-    public UILabel mainMenuLabel;
-    public UILabel restartLabel;
 
     public GameObject gamePausedWindow;
     private bool gamePaused = false;
     private Vector3 gamePausedTopPos;
+    public GameObject greatWindow;
 
     private int score = 0;
     private int scoreRequired = 0;
@@ -37,15 +36,21 @@ public class StoryController : MonoBehaviour
     {
         selectedLanguage = PlayerPrefs.GetInt("SelectedLanguage", 0);
 
-        mainMenuLabel.text = StaticTexts.Instance.language_MainMenu [selectedLanguage];
-        restartLabel.text = StaticTexts.Instance.language_Restart [selectedLanguage];
+        gamePausedWindow.transform.Find("Button_MainMenu").Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_MainMenu [selectedLanguage];
+        gamePausedWindow.transform.Find("Button_Restart").Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_Restart [selectedLanguage];
+        gamePausedWindow.transform.Find("Label_Title").GetComponent<UILabel>().text = StaticTexts.Instance.language_GamePaused [selectedLanguage];
+
+        greatWindow.transform.Find("Button_Continue").Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_Continue [selectedLanguage];
+        greatWindow.transform.Find("Label_Title").GetComponent<UILabel>().text = StaticTexts.Instance.language_Great [selectedLanguage];
+
 
         gamePausedTopPos = new Vector3(0, Screen.height, 0);
         gamePausedWindow.transform.localPosition = gamePausedTopPos;
+        greatWindow.transform.localPosition = gamePausedTopPos;
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
         miniGameData = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData[levelSelected].miniGameData;
 
-        continueButton.SetActive(false);
+        //continueButton.SetActive(false);
         score = 0;
         storyTexts = StaticTexts.Instance.storyTexts[levelSelected];
         storyIndex = 0;
@@ -59,7 +64,7 @@ public class StoryController : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () 
-    {   
+    {
         if (gamePaused)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -68,22 +73,26 @@ public class StoryController : MonoBehaviour
                 TweenPosition.Begin(gamePausedWindow, 0.25f, gamePausedTopPos);
             }
             
-        } 
+        }
         else
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (!minigameStarted)
             {
-                StoryLabelClicked();
-            }
-            else if (Input.GetKeyDown(KeyCode.W))
-            {
-                PlayerPrefs.SetInt("lastUnlockedStory", levelSelected);
-                PlayerPrefs.SetInt("TowerUnlocked" + levelSelected.ToString(), 1);
-                GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData [levelSelected].upgradeData.isUnlocked = true;
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    PlayerPrefs.SetInt("lastUnlockedStory", levelSelected);
+                    PlayerPrefs.SetInt("TowerUnlocked" + levelSelected.ToString(), 1);
+                    GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData [levelSelected].upgradeData.isUnlocked = true;
 
-                Application.LoadLevel("TowerDefense");
+                    Application.LoadLevel("TowerDefense");
+                }
+                else if(Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
+                {
+                    StoryLabelClicked();
+                }
             }
-            else if(Input.GetKeyDown(KeyCode.Escape))
+
+            if(Input.GetKeyDown(KeyCode.Escape))
             {
                 gamePaused = true;
                 TweenPosition.Begin(gamePausedWindow, 0.25f, Vector3.zero);
@@ -101,8 +110,8 @@ public class StoryController : MonoBehaviour
                 PlayerPrefs.SetInt("TowerUnlocked" + levelSelected.ToString(), 1);
                 GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData[levelSelected].upgradeData.isUnlocked = true;
 
-                continueButton.SetActive(true);
-                continueLabel.text = "Click to continue";
+                //continueButton.SetActive(true);
+                //continueLabel.text = "Click to continue";
             }
 
             string score_string;
@@ -137,7 +146,8 @@ public class StoryController : MonoBehaviour
                 minigameFinished = true;
             }
             
-            ResetMinigame();
+            //ResetMinigame();
+            TweenPosition.Begin(greatWindow, 0.25f, Vector3.zero);
         }
 
         UpdateGui();
@@ -167,14 +177,14 @@ public class StoryController : MonoBehaviour
         UpdateGui();
     }
 
-    public void ContinueButtonClicked()
+    /*public void ContinueButtonClicked()
     {
         Application.LoadLevel("TowerDefense");
-    }
+    }*/
 
     void ResetMinigame()
     {
-        if (PlayObject != null)
+        if (PlayObject)
         {
             Destroy(PlayObject);
         }
@@ -197,5 +207,19 @@ public class StoryController : MonoBehaviour
     public void ButtonRestart()
     {
         Application.LoadLevel(Application.loadedLevel);
+    }
+
+    void ButtonContinue()
+    {
+        if (minigameFinished)
+        {
+            Application.LoadLevel("TowerDefense");
+        }
+        else
+        {
+            TweenPosition.Begin(greatWindow, 0.25f, gamePausedTopPos);
+            ResetMinigame();
+            UpdateGui();
+        }
     }
 }

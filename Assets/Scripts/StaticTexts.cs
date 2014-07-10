@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -38,13 +38,14 @@ public class StaticTexts
     /// </summary>
     public string[] language_Score = new string[2]{"Score: ", "Rezultat: "};
     public string[] language_ScoreRequired = new string[2]{"Score Required: ", "Potreban Rezultat: "};
+    public string[] language_Great = new string[2]{"Great!", "Bravo!"};
+    public string[] language_Continue = new string[2]{"Continue", "Nastavi"};
 
     /// <summary>
     /// tower defense
     /// </summary>
     public string[] language_newWaveIn = new string[2]{"New wave in: ", "Novi talas za: "};
     public string[] language_GameLost = new string[2]{"Game Lost", "Poraz"};
-    public string[] language_GamePaused = new string[2]{"Game paused", "Igra pauzirana"};
     public string[] language_GameWon = new string[2]{"Completed", "Pobeda"};
 
     /// <summary>
@@ -59,6 +60,7 @@ public class StaticTexts
     public string[] language_Upgrade = new string[2]{"Upgrade", "Unapredi"};
     public string[] language_Required = new string[2]{"Required", "Potrebno"};
     public string[] language_MainMenu = new string[2]{"Main Menu", "Glavni meni"};
+    public string[] language_GamePaused = new string[2]{"Game paused", "Igra pauzirana"};
 
     /*static private string[] storyTextLevel1 = {
         "Welcome!",
