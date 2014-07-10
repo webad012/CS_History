@@ -13,8 +13,11 @@ public class Health : MonoBehaviour
 
     private bool isEnemy = false;
 
+    private float soundsVolume;
+
     void Start()
     {
+        soundsVolume = PlayerPrefs.GetFloat("SoundsVolume", 1);
         actualHealth = startingHealth;
 
         if (gameObject.tag == "Tower") 
@@ -66,9 +69,7 @@ public class Health : MonoBehaviour
                 
                 if(deathSound)
                 {
-                    //audio.clip = deathSound;
-                    //audio.Play();
-                    AudioSource.PlayClipAtPoint(deathSound, gameObject.transform.position);
+                    AudioSource.PlayClipAtPoint(deathSound, gameObject.transform.position, soundsVolume);
                 }
 
                 destroyed = true;
@@ -77,9 +78,9 @@ public class Health : MonoBehaviour
 
             if(!destroyed && takeDamageSound)
             {
+                audio.volume = soundsVolume;
                 audio.clip = takeDamageSound;
                 audio.Play();
-                //AudioSource.PlayClipAtPoint(takeDamageSound, gameObject.transform.position);
             }
         }
     }

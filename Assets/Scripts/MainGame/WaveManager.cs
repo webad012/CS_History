@@ -38,15 +38,12 @@ public class WaveManager : MonoBehaviour
                 waveStarted = true;
             }
 
-            //for(int i=0; i<wavesData.numberOfEnemies + (currentWave * wavesData.enemyNumIncrease);)
-            //{
             if(spawnCooldown > 0)
             {
                 spawnCooldown -= Time.deltaTime;
             }
             else
             {
-                
                 float multiplicator = Mathf.Pow(wavesData.multiplicator, currentWave);
                 Vector3 pos = new Vector3(4f, 0.8f, Random.Range(-2, 3));
                 int ind = Random.Range(0, wavesData.enemies.Length);
@@ -64,7 +61,6 @@ public class WaveManager : MonoBehaviour
                 numOfEnemies++;
                 spawnCooldown = 0.5f;
             }
-            //}
 
             if(numOfEnemies == wavesData.numberOfEnemies + (currentWave * wavesData.enemyNumIncrease))
             {
@@ -74,6 +70,8 @@ public class WaveManager : MonoBehaviour
             }
         }
 
-        waveTimerLabel.text = "New wave in: " + ((int)waveCooldown).ToString();
+        //waveTimerLabel.text = "New wave in: " + ((int)waveCooldown).ToString();
+        waveTimerLabel.text = StaticTexts.Instance.language_newWaveIn[PlayerPrefs.GetInt("SelectedLanguage", 0)] 
+        + ((int)waveCooldown).ToString();
 	}
 }

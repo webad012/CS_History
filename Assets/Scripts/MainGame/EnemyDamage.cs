@@ -12,13 +12,14 @@ public class EnemyDamage : MonoBehaviour
 
     private EnemyAnimation enemyAnimationScript;
 
-    //private bool triggeredTower = false;
     private GameObject towerObject;
+
+    private float soundsVolume;
 
 	// Use this for initialization
 	void Start () 
     {
-        //cd = cooldown;
+        soundsVolume = PlayerPrefs.GetFloat("SoundsVolume", 1);
         cd = 0;
         enemyMoveScript = gameObject.GetComponent<EnemyMove>();
         enemyAnimationScript = gameObject.GetComponent<EnemyAnimation>();
@@ -27,11 +28,6 @@ public class EnemyDamage : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        /*if (cd > 0)
-        {
-            cd -= Time.deltaTime;
-        }*/
-
         if (towerObject)
         {
             if (cd > 0)
@@ -42,7 +38,7 @@ public class EnemyDamage : MonoBehaviour
             if (cd <= 0)
             {
                 RestartCooldown(1f);
-                AudioSource.PlayClipAtPoint(dealDamageSound, gameObject.transform.position);
+                AudioSource.PlayClipAtPoint(dealDamageSound, gameObject.transform.position, soundsVolume);
                 enemyAnimationScript.PlayDamageAnimation();
                 towerObject.GetComponent<Health>().TakeDamage(damage);
             }

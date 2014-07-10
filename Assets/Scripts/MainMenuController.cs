@@ -30,6 +30,8 @@ public class MainMenuController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        selectedLanguage = PlayerPrefs.GetInt("SelectedLanguage", 0);
+
         outLeftVector = new Vector3(outLeftX, 0, 0);
         outRightVector = new Vector3(outRightX, 0, 0);
 
@@ -108,26 +110,25 @@ public class MainMenuController : MonoBehaviour
 
     void LanguageButton()
     {
-        int selLang = PlayerPrefs.GetInt("SelectedLanguage", 0);
-        if (selLang + 1 == gameDataControllerScript.languages.Length)
+        if (selectedLanguage + 1 == gameDataControllerScript.languages.Length)
         {
-            selLang = 0;
+            selectedLanguage = 0;
         }
         else
         {
-            selLang++;
+            selectedLanguage++;
         }
-        PlayerPrefs.SetInt("SelectedLanguage", selLang);
+        PlayerPrefs.SetInt("SelectedLanguage", selectedLanguage);
 
         UpdateGUI();
     }
 
     void UpdateGUI()
     {
-        languageFlag.spriteName = gameDataControllerScript.languages[PlayerPrefs.GetInt("SelectedLanguage", 0)].spritename;
-        playButton.text = StaticTexts.Instance.language_Play[PlayerPrefs.GetInt("SelectedLanguage", 0)];
-        upgradeButton.text = StaticTexts.Instance.language_Upgrade[PlayerPrefs.GetInt("SelectedLanguage", 0)];
-        optionsButton.text = StaticTexts.Instance.language_Options[PlayerPrefs.GetInt("SelectedLanguage", 0)];
-        exitButton.text = StaticTexts.Instance.language_Exit[PlayerPrefs.GetInt("SelectedLanguage", 0)];
+        languageFlag.spriteName = gameDataControllerScript.languages[selectedLanguage].spritename;
+        playButton.text = StaticTexts.Instance.language_Play[selectedLanguage];
+        upgradeButton.text = StaticTexts.Instance.language_Upgrade[selectedLanguage];
+        optionsButton.text = StaticTexts.Instance.language_Options[selectedLanguage];
+        exitButton.text = StaticTexts.Instance.language_Exit[selectedLanguage];
     }
 }

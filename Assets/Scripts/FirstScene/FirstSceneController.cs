@@ -16,10 +16,14 @@ public class FirstSceneController : MonoBehaviour
      * int LevelUnlocked
      * int lastUnlockedStory
      * int SelectedLanguage
+     * flaot SoundsVolume
      * 
      */
 
     public UILabel statusLabel;
+    public GameObject statusButton;
+    public GameObject updateButton;
+    public GameObject goOnlineButton;
 
     private GameDataController gameDataControllerScript;
 
@@ -31,6 +35,9 @@ public class FirstSceneController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        updateButton.SetActive(false);
+        goOnlineButton.SetActive(false);
+        //statusButton.GetComponent<UIButton>().isEnabled = false;
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 
         statusLabel.text = "Game initializing...";
@@ -56,11 +63,9 @@ public class FirstSceneController : MonoBehaviour
             {
                 if (gameDataControllerScript.canContinue)
                 {
-                    statusLabel.text = "There was connection problem,\nbut you may play offline.\nPress any key to continue.";
-                    if (Input.anyKeyDown)
-                    {
-                        Application.LoadLevel("MainMenu");
-                    }
+                    statusLabel.text = "There was connection problem,\nbut you may play offline.\nSelect here to continue.";
+                    //statusButton.GetComponent<UIButton>().isEnabled = true;
+                    goOnlineButton.SetActive(true);
                 }
             }
             else
@@ -69,23 +74,17 @@ public class FirstSceneController : MonoBehaviour
                 {
                     if (gameDataControllerScript.canContinue)
                     {
-                        statusLabel.text = "Version obsolete, please download latest version,\nbut you may play offline.\nPress any key to continue.";
-                        if (Input.anyKeyDown)
-                        {
-                            Application.LoadLevel("MainMenu");
-                        }
+                        statusLabel.text = "Version obsolete, please download latest version,\nbut you may play offline.\nSelect here to continue.";
+                        //statusButton.GetComponent<UIButton>().isEnabled = true;
+                        updateButton.SetActive(true);
                     }
                 }
                 else
                 {
                     if (gameDataControllerScript.canContinue)
                     {
-                        statusLabel.text = "Game initialzied.\nPress any key to continue.";
-
-                        if (Input.anyKeyDown)
-                        {
-                            Application.LoadLevel("MainMenu");
-                        }
+                        statusLabel.text = "Game initialzied.\nSelect here to continue.";
+                        //statusButton.GetComponent<UIButton>().isEnabled = true;
                     }
                 }
             }
@@ -94,7 +93,7 @@ public class FirstSceneController : MonoBehaviour
 
     IEnumerator CheckGameVersion () 
     {
-        statusLabel.text = "Game initializing...Checking version";
+        statusLabel.text = "Game initializing...Checking version\nSelect here to continue offline.";
 
         string url = StaticTexts.Instance.web_api_location + "?action=GetCurrentVersion";
 
@@ -125,5 +124,20 @@ public class FirstSceneController : MonoBehaviour
                 }
             }
         }
+    }
+
+    void UpdateButton()
+    {
+        Application.OpenURL(StaticTexts.Instance.download_location);
+    }
+
+    void StatusButton()
+    {
+        Application.LoadLevel("MainMenu");
+    }
+
+    void GoOnlineButton()
+    {
+        Application.OpenURL(StaticTexts.Instance.download_location);
     }
 }

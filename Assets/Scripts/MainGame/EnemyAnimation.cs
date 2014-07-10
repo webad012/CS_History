@@ -3,12 +3,9 @@ using System.Collections;
 
 public class EnemyAnimation : MonoBehaviour 
 {
-    //public Animation moving;
-    //public Animator damaging;
     public string movingAnimation;
     public string damagingAnimation;
 
-    //private bool movePlaying = false;
     public bool damagePlaying = false;
 
     private EnemyMove enemyMoveScript;
@@ -26,16 +23,12 @@ public class EnemyAnimation : MonoBehaviour
     {
         if (enemyMoveScript.canMove)
         {
-            //if(!movePlaying)
-            //if(!animationScript.IsPlaying(movingAnimation) && !animationScript.IsPlaying(damagingAnimation))
             if (!animationScript.isPlaying)
             {
                 if (damagePlaying)
                 {
                     damagePlaying = false;
                 }
-                //movePlaying = true;
-                //damagePlaying = false;
                 animationScript.wrapMode = WrapMode.Loop;
                 animationScript.Play(movingAnimation);
             }
@@ -60,10 +53,7 @@ public class EnemyAnimation : MonoBehaviour
 
     public void PlayDamageAnimation()
     {
-        //if(!animationScript.IsPlaying(damagingAnimation))
-        //{
         animationScript.wrapMode = WrapMode.Once;
         animationScript.Play(damagingAnimation);
-        //}
     }
 }

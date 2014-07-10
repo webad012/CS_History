@@ -19,6 +19,7 @@ public class TowerDefenseController : MonoBehaviour
 
     public UILabel knowledgeLabel;
     public UILabel knowledgeRequiredLabel;
+    public UILabel requiredLabel;
     public UILabel coinsLabel;
 
     public GameObject sprinkleStartingObject;
@@ -42,9 +43,25 @@ public class TowerDefenseController : MonoBehaviour
     private Vector3 coinsRealDestination;
     private Vector3 knowledgeRealDestination;
 
+    private int selectedLanguage;
+    private float soundsVolume;
+
 	// Use this for initialization
 	void Start () 
     {
+        soundsVolume = PlayerPrefs.GetFloat("SoundsVolume", 1);
+        selectedLanguage = PlayerPrefs.GetInt("SelectedLanguage", 0);
+
+        requiredLabel.text = StaticTexts.Instance.language_Required[selectedLanguage];
+        gameLostWindow.transform.Find("Button_MainMenu").transform.Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_MainMenu[selectedLanguage];
+        gameLostWindow.transform.Find("Button_Restart").transform.Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_Restart[selectedLanguage];
+        gameLostWindow.transform.Find("Label_Title").GetComponent<UILabel>().text = StaticTexts.Instance.language_GameLost[selectedLanguage];
+        gamePausedWindow.transform.Find("Button_MainMenu").transform.Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_MainMenu[selectedLanguage];
+        gamePausedWindow.transform.Find("Button_Restart").transform.Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_Restart[selectedLanguage];
+        gamePausedWindow.transform.Find("Label_Title").GetComponent<UILabel>().text = StaticTexts.Instance.language_GamePaused[selectedLanguage];
+        gameWonWindow.transform.Find("Button_Back").transform.Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_Back[selectedLanguage];
+        gameWonWindow.transform.Find("Label_Title").GetComponent<UILabel>().text = StaticTexts.Instance.language_GameWon[selectedLanguage];
+
         windowsTopPos = new Vector3(0, Screen.height, 0);
         gameLostWindow.transform.localPosition = windowsTopPos;
         gameWonWindow.transform.localPosition = windowsTopPos;
@@ -214,7 +231,7 @@ public class TowerDefenseController : MonoBehaviour
             GameObject coinObject = NGUITools.AddChild(sprinkleParentAnchor, coinIconPrefab);
             coinObject.transform.localPosition = sourcePos;
             TweenPosition.Begin(coinObject, 0.5f, coinsRealDestination);
-            AudioSource.PlayClipAtPoint(coinSound, sourceObjectPos);
+            AudioSource.PlayClipAtPoint(coinSound, sourceObjectPos, soundsVolume);
 
             yield return new WaitForSeconds(0.2f);
         }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class StoryController : MonoBehaviour 
 {
@@ -10,6 +11,8 @@ public class StoryController : MonoBehaviour
     public GameObject continueButton;
     public UILabel continueLabel;
     public GameObject storyImageSprite;
+    public UILabel mainMenuLabel;
+    public UILabel restartLabel;
 
     public GameObject gamePausedWindow;
     private bool gamePaused = false;
@@ -18,7 +21,7 @@ public class StoryController : MonoBehaviour
     private int score = 0;
     private int scoreRequired = 0;
     private string currentStoryText;
-    private string[] storyTexts;
+    private List<string[]> storyTexts;
     private int storyIndex;
     private bool minigameStarted = false;
     private bool minigameFinished = false;
@@ -28,8 +31,15 @@ public class StoryController : MonoBehaviour
 
     private MiniGameData miniGameData;
 
+    private int selectedLanguage;
+
 	void Start () 
     {
+        selectedLanguage = PlayerPrefs.GetInt("SelectedLanguage", 0);
+
+        mainMenuLabel.text = StaticTexts.Instance.language_MainMenu [selectedLanguage];
+        restartLabel.text = StaticTexts.Instance.language_Restart [selectedLanguage];
+
         gamePausedTopPos = new Vector3(0, Screen.height, 0);
         gamePausedWindow.transform.localPosition = gamePausedTopPos;
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
@@ -105,12 +115,12 @@ public class StoryController : MonoBehaviour
                 score_string = score.ToString();
             }
 
-            scoreLabel.text = "Score: " + score_string;
-            scoreRequiredLabel.text = "Score Required: " + scoreRequired.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+            scoreLabel.text = StaticTexts.Instance.language_Score[selectedLanguage] + score_string;
+            scoreRequiredLabel.text = StaticTexts.Instance.language_ScoreRequired[selectedLanguage] + scoreRequired.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
         } 
         else
         {
-            storyLabel.text = storyTexts [storyIndex];
+            storyLabel.text = (storyTexts [storyIndex])[selectedLanguage];
         }
     }
 
@@ -136,9 +146,9 @@ public class StoryController : MonoBehaviour
     public void StoryLabelClicked()
     {
         storyIndex++;
-        if (storyIndex >= storyTexts.Length)
+        if (storyIndex >= storyTexts.Count)
         {
-            storyLabel.gameObject.SetActive(false);
+            storyLabel.transform.parent.gameObject.SetActive(false);
             minigameStarted = true;
             ResetMinigame();
         }

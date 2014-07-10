@@ -8,7 +8,6 @@ public class BallController : MonoBehaviour
     private int ball_value;
 
     private Color defaultColor = new Color32(40, 115, 120, 255);
-    //private Color mouseOverColor = new Color32(130, 130, 40, 255);
 
     private float tweenSpeed = 0.25f;
     private float onesTweenX = 0.13f;
@@ -16,16 +15,9 @@ public class BallController : MonoBehaviour
 
     private StoryController sc;
 
-    //private string currentToolTipText = "";
-   // private GUIStyle guiStyleFore;
-    //private GUIStyle guiStyleBack;
-    //private bool showTooltip = false;
-
 	// Use this for initialization
 	void Start () 
     {
-        //SetTooltip();
-
         string pipe_num = transform.parent.transform.parent.name.Substring(5);
         
         ball_value = (int)Mathf.Pow(10, Convert.ToInt32(pipe_num));
@@ -38,17 +30,6 @@ public class BallController : MonoBehaviour
         renderer.material.color = defaultColor;
         sc = GameObject.Find("StoryController").GetComponent<StoryController>();
 	}
-
-    /*void OnGUI()
-    {
-        if (showTooltip)
-        {
-            float x = Event.current.mousePosition.x;
-            float y = Event.current.mousePosition.y;
-            GUI.Label (new Rect (x-149,y+40,300,60), currentToolTipText, guiStyleBack);
-            GUI.Label (new Rect (x-150,y+40,300,60), currentToolTipText, guiStyleFore);
-        }
-    }*/
 
     public void SelectBall()
     {
@@ -122,39 +103,4 @@ public class BallController : MonoBehaviour
     {
         SelectBall();
     }
-
-    /*void OnMouseEnter ()
-    {
-        renderer.material.color = mouseOverColor;
-        showTooltip = true;
-    }
-    
-    void OnMouseExit ()
-    {
-        renderer.material.color = defaultColor;
-        showTooltip = false;
-    }
-
-    void SetTooltip()
-    {
-        guiStyleFore = new GUIStyle();
-        guiStyleFore.normal.textColor = Color.white;  
-        guiStyleFore.alignment = TextAnchor.UpperCenter ;
-        guiStyleFore.wordWrap = true;
-        guiStyleBack = new GUIStyle();
-        guiStyleBack.normal.textColor = Color.black;  
-        guiStyleBack.alignment = TextAnchor.UpperCenter ;
-        guiStyleBack.wordWrap = true;
-
-        string pipe_num = transform.parent.transform.parent.name.Substring(5);
-
-        ball_value = (int)Mathf.Pow(10, Convert.ToInt32(pipe_num));
-        
-        if(transform.parent.name.Equals("Fives"))
-        {
-            ball_value *= 5;
-        }
-        
-        currentToolTipText = ball_value.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
-    }*/
 }
