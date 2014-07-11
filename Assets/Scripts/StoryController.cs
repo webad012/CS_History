@@ -6,10 +6,9 @@ public class StoryController : MonoBehaviour
 {
     public UILabel scoreLabel;
     public UILabel scoreRequiredLabel;
+    public UILabel completedLabel;
     public UILabel storyLabel;
     public GameObject background;
-    //public GameObject continueButton;
-    //public UILabel continueLabel;
     public GameObject storyImageSprite;
 
     public GameObject gamePausedWindow;
@@ -57,6 +56,7 @@ public class StoryController : MonoBehaviour
         currentRequiredResult = 0;
         scoreLabel.text = "";
         scoreRequiredLabel.text = "";
+        completedLabel.text = "";
         background.renderer.material.mainTexture = miniGameData.backgroundTexture;
         storyImageSprite.SetActive(false);
         UpdateGui();
@@ -109,9 +109,6 @@ public class StoryController : MonoBehaviour
                 PlayerPrefs.SetInt("lastUnlockedStory", levelSelected);
                 PlayerPrefs.SetInt("TowerUnlocked" + levelSelected.ToString(), 1);
                 GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData[levelSelected].upgradeData.isUnlocked = true;
-
-                //continueButton.SetActive(true);
-                //continueLabel.text = "Click to continue";
             }
 
             string score_string;
@@ -126,6 +123,7 @@ public class StoryController : MonoBehaviour
 
             scoreLabel.text = StaticTexts.Instance.language_Score[selectedLanguage] + score_string;
             scoreRequiredLabel.text = StaticTexts.Instance.language_ScoreRequired[selectedLanguage] + scoreRequired.ToString("#,#", System.Globalization.CultureInfo.InvariantCulture);
+            completedLabel.text = StaticTexts.Instance.language_Completed[selectedLanguage] + currentRequiredResult.ToString() + "/" + miniGameData.requiredResultRanges.Length.ToString();
         } 
         else
         {
@@ -146,7 +144,6 @@ public class StoryController : MonoBehaviour
                 minigameFinished = true;
             }
             
-            //ResetMinigame();
             TweenPosition.Begin(greatWindow, 0.25f, Vector3.zero);
         }
 

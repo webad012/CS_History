@@ -37,9 +37,10 @@ public class StaticTexts
     /// mini game
     /// </summary>
     public string[] language_Score = new string[2]{"Score: ", "Rezultat: "};
-    public string[] language_ScoreRequired = new string[2]{"Score Required: ", "Potreban Rezultat: "};
+    public string[] language_ScoreRequired = new string[2]{"Required: ", "Potrebno: "};
     public string[] language_Great = new string[2]{"Great!", "Bravo!"};
     public string[] language_Continue = new string[2]{"Continue", "Nastavi"};
+    public string[] language_Completed = new string[2]{"Completed: ", "Zavrseno: "};
 
     /// <summary>
     /// tower defense
