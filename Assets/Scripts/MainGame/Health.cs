@@ -37,10 +37,6 @@ public class Health : MonoBehaviour
     {
         if (actualHealth > 0)
         {
-            /*if (!isEnemy)
-            {
-                Debug.Log(gameObject.name + " - " + Time.time.ToString());
-            }*/
             bool destroyed = false;
 
             actualHealth -= damage;
@@ -70,8 +66,7 @@ public class Health : MonoBehaviour
                 
                 if(deathSound)
                 {
-                    //AudioSource.PlayClipAtPoint(deathSound, gameObject.transform.position, soundsVolume);
-                    gameDataControllerScript.PlayAudioClip(takeDamageSound);
+                    gameDataControllerScript.PlayAudioClip(deathSound);
                 }
 
                 destroyed = true;
@@ -81,9 +76,6 @@ public class Health : MonoBehaviour
             if(!destroyed && takeDamageSound)
             {
                 gameDataControllerScript.PlayAudioClip(takeDamageSound);
-                //audio.volume = soundsVolume;
-                //audio.clip = takeDamageSound;
-                //audio.Play();
             }
         }
     }
