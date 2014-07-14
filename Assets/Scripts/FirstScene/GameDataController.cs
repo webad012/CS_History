@@ -245,16 +245,29 @@ public class Language
     public string spritename;
 }
 
+[System.Serializable]
+public class Sounds
+{
+    public AudioClip menuClick;
+    public AudioClip backgroundMenu;
+    public AudioClip backgroundTowerDefense;
+}
+
 public class GameDataController : MonoBehaviour 
 {
     public TowerData[] towersData;
     public Level[] levels;
     public Language[] languages;
-    
+    public Sounds sounds;
     public bool canContinue = false;
+
+    private AudioSource backgroundMusicSource;
 
     void Awake()
     {
+        backgroundMusicSource = gameObject.AddComponent<AudioSource>();
+        backgroundMusicSource.loop = true;
+
         DontDestroyOnLoad (this);
     }
 
@@ -290,5 +303,32 @@ public class GameDataController : MonoBehaviour
             towersData[i].mainGameData.stats.damageCurrentLevel = PlayerPrefs.GetInt("DamageLevel_" + i.ToString(), 0);
             towersData[i].mainGameData.stats.shootCooldownCurrentLevel = PlayerPrefs.GetInt("CooldownLevel_" + i.ToString(), 0);
         }
+    }
+
+    public void PlayAudioClip(AudioClip ac)
+    {
+        audio.volume = PlayerPrefs.GetFloat("SoundsVolume", 1);
+        audio.PlayOneShot(ac);
+
+    }
+
+    public void PlayBackgroundMusic(AudioClip ac)
+    {
+        if (backgroundMusicSource.clip != ac)
+        {
+            if (backgroundMusicSource.isPlaying)
+            {
+                backgroundMusicSource.Stop();
+            }
+
+            backgroundMusicSource.clip = ac;
+            RechecBackgroundVolume();
+            backgroundMusicSource.Play();
+        }
+    }
+
+    public void RechecBackgroundVolume()
+    {
+        backgroundMusicSource.volume = PlayerPrefs.GetFloat("SoundsVolume", 1)/2;
     }
 }

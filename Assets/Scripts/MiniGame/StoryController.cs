@@ -15,6 +15,9 @@ public class StoryController : MonoBehaviour
     private bool gamePaused = false;
     private Vector3 gamePausedTopPos;
     public GameObject greatWindow;
+    private bool scoreAchieved = false;
+
+    public AudioClip congratulationsSound;
 
     private int score = 0;
     private int scoreRequired = 0;
@@ -27,6 +30,7 @@ public class StoryController : MonoBehaviour
     private int currentRequiredResult;
     private GameObject PlayObject;
 
+    private GameDataController gameDataControllerScript;
     private MiniGameData miniGameData;
 
     private int selectedLanguage;
@@ -42,12 +46,13 @@ public class StoryController : MonoBehaviour
         greatWindow.transform.Find("Button_Continue").Find("Label").GetComponent<UILabel>().text = StaticTexts.Instance.language_Continue [selectedLanguage];
         greatWindow.transform.Find("Label_Title").GetComponent<UILabel>().text = StaticTexts.Instance.language_Great [selectedLanguage];
 
-
         gamePausedTopPos = new Vector3(0, Screen.height, 0);
         gamePausedWindow.transform.localPosition = gamePausedTopPos;
         greatWindow.transform.localPosition = gamePausedTopPos;
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
-        miniGameData = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>().towersData[levelSelected].miniGameData;
+
+        gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
+        miniGameData = gameDataControllerScript.towersData[levelSelected].miniGameData;
 
         //continueButton.SetActive(false);
         score = 0;
@@ -65,16 +70,15 @@ public class StoryController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        if (gamePaused)
+        if (gamePaused && !scoreAchieved)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 gamePaused = false;
                 TweenPosition.Begin(gamePausedWindow, 0.25f, gamePausedTopPos);
             }
-            
         }
-        else
+        else if (!scoreAchieved)
         {
             if (!minigameStarted)
             {
@@ -91,7 +95,6 @@ public class StoryController : MonoBehaviour
                     StoryLabelClicked();
                 }
             }
-
             if(Input.GetKeyDown(KeyCode.Escape))
             {
                 gamePaused = true;
@@ -133,25 +136,32 @@ public class StoryController : MonoBehaviour
 
     public void AddToScore(float addition)
     {
-        score += (int)addition;
-
-        if (score == scoreRequired)
+        if (!gamePaused && !scoreAchieved)
         {
-            currentRequiredResult++;
+            score += (int)addition;
 
-            if(currentRequiredResult == miniGameData.requiredResultRanges.Length)
+            if (score == scoreRequired)
             {
-                minigameFinished = true;
-            }
-            
-            TweenPosition.Begin(greatWindow, 0.25f, Vector3.zero);
-        }
+                currentRequiredResult++;
 
-        UpdateGui();
+                if (currentRequiredResult == miniGameData.requiredResultRanges.Length)
+                {
+                    minigameFinished = true;
+                }
+
+                gameDataControllerScript.PlayAudioClip(congratulationsSound);
+                gamePaused = true;
+                scoreAchieved = true;
+                TweenPosition.Begin(greatWindow, 0.25f, Vector3.zero);
+            }
+
+            UpdateGui();
+        }
     }
 
     public void StoryLabelClicked()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         storyIndex++;
         if (storyIndex >= storyTexts.Count)
         {
@@ -174,13 +184,11 @@ public class StoryController : MonoBehaviour
         UpdateGui();
     }
 
-    /*public void ContinueButtonClicked()
-    {
-        Application.LoadLevel("TowerDefense");
-    }*/
-
     void ResetMinigame()
     {
+        gamePaused = false;
+        scoreAchieved = false;
+
         if (PlayObject)
         {
             Destroy(PlayObject);
@@ -198,16 +206,19 @@ public class StoryController : MonoBehaviour
 
     public void ButtonMainMenu()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         Application.LoadLevel("MainMenu");
     }
     
     public void ButtonRestart()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         Application.LoadLevel(Application.loadedLevel);
     }
 
     void ButtonContinue()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         if (minigameFinished)
         {
             Application.LoadLevel("TowerDefense");

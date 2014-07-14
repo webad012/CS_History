@@ -15,8 +15,7 @@ public class Projectile : MonoBehaviour
 	{
 		initPos = transform.position;
 
-        //if (transform.Find("One").gameObject != null)
-        if (projectileName == "BinaryProjectile")
+        if (projectileName == "Binary")
         {
             isBinaryProjectile = true;
         }
@@ -43,10 +42,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.tag == "Enemy")
         {
-            //Debug.Log("asd1");
-            //other.GetComponent<Health>().health -= damage;
             other.gameObject.GetComponent<Health>().TakeDamage(damage);
-            //create particles
             Destroy(gameObject);
         }
     }

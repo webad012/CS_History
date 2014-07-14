@@ -10,6 +10,7 @@ public class EnemyMove : MonoBehaviour
 
     void Start()
     {
+        audio.loop = true;
         transform.rotation = Quaternion.identity;
 
         enemyAnimationScript = gameObject.GetComponent<EnemyAnimation>();

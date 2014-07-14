@@ -55,6 +55,14 @@ public class StaticTexts
     public string[] language_Restart = new string[2]{"Restart", "Restartuj"};
 
     /// <summary>
+    /// credits
+    /// </summary>
+    public string language_Credits = "Computer Science History\n\n"
+            + "Created by:\nMilos Jankovic\n\n"
+            + "using Unity3D and free downloaded stuff from Unity Asset Store\n\n"
+            + "For any questions, comments or suggestions write to:\nwebad012@gmail.com" ;
+
+    /// <summary>
     /// zajednicko za vise prozora
     /// </summary>
     public string[] language_Back = new string[2]{"Back", "Nazad"};
@@ -63,27 +71,6 @@ public class StaticTexts
     public string[] language_MainMenu = new string[2]{"Main Menu", "Glavni meni"};
     public string[] language_GamePaused = new string[2]{"Game paused", "Igra pauzirana"};
 
-    /*static private string[] storyTextLevel1 = {
-        "Welcome!",
-        "Main currency for advancing through history and upgrading your weaponry is knowledge.",
-        "Yes, knowledge! Most valuable posession in the world.",
-        "Each level will teach you about small steps that affected history", 
-        "into developing computer science as we know it today.",
-        "Each level is divided into 2 parts: minigame and defense game.",
-        "In minigame you have to prove yourself worthy of obtaining knowledge of specific item for that level.",
-        "After completing minigame you can pass to main game where your objective will be to defend",
-        "and gain knowledge needed for next level",
-        "Our story begin in ancient Sumeria.", 
-        "The abacus\nthe first known calculator", 
-        "Was probably invented by the Babylonians as an aid to simple arithmetic around this time period.", 
-        "This laid the foundations for positional notation and later computing developments.",
-        "Abacus is split into two basic rows:\ntop row is for '5's, and\nthe bottom row is for the 'ones'",
-        "Each column, looking from right to left, equals column number (starting from 0) times 10",
-        "Example for 100",
-        "Example for 1,234,567",
-        "Your objective is to create requested numbers using abacus."
-    };
-    public List<string[]> storyTexts = new List<string[]>(){storyTextLevel1, storyTextLevel2, storyTextLevel3};*/
     static private List<string[]> storyTextLevel1 = new List<string[]>()
     {
         new string[]{
@@ -180,7 +167,7 @@ public class StaticTexts
         },
         new string[]{
             "upon which is a pointing figure connected to the wheels by means of differential gearing", 
-            "na kojima se nalazi pokazujuca figurakonektovana sa tockovima koristeci diferencijalni prenos"
+            "na kojima se nalazi pokazujuca figura konektovana sa tockovima koristeci diferencijalni prenos"
         },
         new string[]{
             "Through careful selection of wheel size, track and gear ratios", 

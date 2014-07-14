@@ -21,6 +21,7 @@ public class LevelsSelectorController : MonoBehaviour
 	void Start () 
     {
         gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
+        gameDataControllerScript.PlayBackgroundMusic(gameDataControllerScript.sounds.backgroundMenu);
 
         outLeftVector = new Vector3(-Screen.width, 0, 0);
         outRightVector = new Vector3(Screen.width, 0, 0);
@@ -105,6 +106,7 @@ public class LevelsSelectorController : MonoBehaviour
 
     void ButtonLeft()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         if (currentLevel > 0)
         {
             TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, outRightVector);
@@ -115,6 +117,7 @@ public class LevelsSelectorController : MonoBehaviour
 
     void ButtonRight()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         if (currentLevel != levelObjects.Count - 1)
         {
             TweenPosition.Begin(levelObjects[currentLevel], levelTransitionSpeed, outLeftVector);
@@ -125,6 +128,7 @@ public class LevelsSelectorController : MonoBehaviour
 
     void LevelSelected()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         PlayerPrefs.SetInt("LevelSelected", currentLevel);
 
         if (currentLevel <= lastUnlockedStory)

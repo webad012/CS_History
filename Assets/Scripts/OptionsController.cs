@@ -49,29 +49,37 @@ public class OptionsController : MonoBehaviour
 
     public void SelectedBack()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         Application.LoadLevel("MainMenu");
     }
 
     public void SelectedReset()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         optionsWindow.SetActive(false);
         resetAllWindow.SetActive(true);
     }
 
     void RestartYesButton()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         PlayerPrefs.DeleteAll();
         gameDataControllerScript.InitializeTowers();
+        gameDataControllerScript.RechecBackgroundVolume();
+
+        Application.LoadLevel(Application.loadedLevel);
+        /*
         selectedLanguage = PlayerPrefs.GetInt("SelectedLanguage", 0);
 
         optionsWindow.SetActive(true);
         resetAllWindow.SetActive(false);
 
-        UpdateGUI();
+        UpdateGUI();*/
     }
 
     void RestartNoButton()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         optionsWindow.SetActive(true);
         resetAllWindow.SetActive(false);
     }
@@ -83,6 +91,8 @@ public class OptionsController : MonoBehaviour
             soundsVolume += 0.1f;
             soundsVolume = (float)System.Math.Round(soundsVolume, 1);
             PlayerPrefs.SetFloat("SoundsVolume", soundsVolume);
+            gameDataControllerScript.RechecBackgroundVolume();
+            gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
             UpdateGUI();
         }
     }
@@ -94,6 +104,8 @@ public class OptionsController : MonoBehaviour
             soundsVolume -= 0.1f;
             soundsVolume = (float)System.Math.Round(soundsVolume, 1);
             PlayerPrefs.SetFloat("SoundsVolume", soundsVolume);
+            gameDataControllerScript.RechecBackgroundVolume();
+            gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
             UpdateGUI();
         }
     }

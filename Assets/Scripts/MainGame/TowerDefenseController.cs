@@ -33,6 +33,10 @@ public class TowerDefenseController : MonoBehaviour
     // sprinkle knowledge
     public GameObject knowledgeDestination;
     public GameObject knowledgeIconPrefab;
+    public AudioClip knowledgeSound;
+
+    public AudioClip victorySound;
+    public AudioClip gameOverSound;
     
     private GameDataController gameDataControllerScript;
     private float coinsCooldown;
@@ -46,9 +50,17 @@ public class TowerDefenseController : MonoBehaviour
     private int selectedLanguage;
     private float soundsVolume;
 
+    public UISprite timeForwardSprite;
+    private Color timeForwardOnColor = new Color32 (220, 135, 30, 255);
+    private Color timeForwardOffColor = new Color32 (150, 150, 150, 150);
+    private bool timeForwardSelected = false;
+
 	// Use this for initialization
 	void Start () 
     {
+        gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
+        gameDataControllerScript.PlayBackgroundMusic(gameDataControllerScript.sounds.backgroundTowerDefense);
+
         soundsVolume = PlayerPrefs.GetFloat("SoundsVolume", 1);
         selectedLanguage = PlayerPrefs.GetInt("SelectedLanguage", 0);
 
@@ -77,7 +89,6 @@ public class TowerDefenseController : MonoBehaviour
                                              0f);
         Time.timeScale = 1;
         levelSelected = PlayerPrefs.GetInt("LevelSelected", 0);
-        gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 
         for (int i=0; i<groundPlanes.Length; i++)
         {
@@ -91,7 +102,9 @@ public class TowerDefenseController : MonoBehaviour
         knowledgeCooldown = gameDataControllerScript.levels [levelSelected].house.knowledgeTimeout;
 
         Camera.main.backgroundColor = gameDataControllerScript.levels [levelSelected].cameraBackground;
-	}
+
+        timeForwardSprite.color = timeForwardOffColor;
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -106,7 +119,10 @@ public class TowerDefenseController : MonoBehaviour
 
                 Time.timeScale = 0;
                 lostWindowDisplayed = true;
+
                 TweenPosition.Begin(gameLostWindow, 0.25f, Vector3.zero);
+                gameDataControllerScript.PlayAudioClip(gameOverSound);
+                //AudioSource.PlayClipAtPoint(gameOverSound, Vector3.zero, PlayerPrefs.GetFloat("SoundsVolume", 1));
             }
         }
         else if(gameWon)
@@ -115,6 +131,9 @@ public class TowerDefenseController : MonoBehaviour
             {
                 Time.timeScale = 0;
                 wonWindowDisplayed = true;
+
+                gameDataControllerScript.PlayAudioClip(victorySound);
+                //AudioSource.PlayClipAtPoint(victorySound, Vector3.zero, PlayerPrefs.GetFloat("SoundsVolume", 1));
                 TweenPosition.Begin(gameWonWindow, 0.25f, Vector3.zero);
             }
         }
@@ -146,7 +165,8 @@ public class TowerDefenseController : MonoBehaviour
                 if (coinsCooldown > 0)
                 {
                     coinsCooldown -= Time.deltaTime;
-                } else
+                } 
+                else
                 {
                     coinsCooldown = gameDataControllerScript.levels [levelSelected].house.coinsTimeout;
                     coins_int += gameDataControllerScript.levels [levelSelected].house.coinsGain;
@@ -154,6 +174,7 @@ public class TowerDefenseController : MonoBehaviour
                                                  10,
                                                  sprinkleStartingObject.transform.position));
                 }
+
                 if (coins_int == 0)
                 {
                     coins_string = coins_int.ToString();
@@ -203,21 +224,49 @@ public class TowerDefenseController : MonoBehaviour
                 }
             }
         }
-	}
 
+        if (timeForwardSelected)
+        {
+            timeForwardSprite.color = timeForwardOnColor;
+        }
+        else
+        {
+            timeForwardSprite.color = timeForwardOffColor;
+        }
+    }
+    
     public void ButtonMainMenu()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         Application.LoadLevel("MainMenu");
     }
 
     public void ButtonRestart()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         Application.LoadLevel(Application.loadedLevel);
     }
 
     public void ButtonBack()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         Application.LoadLevel("LevelSelector");
+    }
+
+    public void ButtonForwardTime()
+    {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
+
+        if (timeForwardSelected)
+        {
+            Time.timeScale = 1f;
+            timeForwardSelected = false;
+        }
+        else
+        {
+            Time.timeScale = 1.5f;
+            timeForwardSelected = true;
+        }
     }
 
     public IEnumerator SprinkleCoins(int coins, int step, Vector3 sourceObjectPos)
@@ -250,6 +299,7 @@ public class TowerDefenseController : MonoBehaviour
             GameObject knowledgeObject = NGUITools.AddChild(sprinkleParentAnchor, knowledgeIconPrefab);
             knowledgeObject.transform.localPosition = sourcePos;
             TweenPosition.Begin(knowledgeObject, 0.5f, knowledgeRealDestination);
+            AudioSource.PlayClipAtPoint(knowledgeSound, sourceObjectPos, soundsVolume);
             
             yield return new WaitForSeconds(0.2f);
         }

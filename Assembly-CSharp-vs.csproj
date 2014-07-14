@@ -164,8 +164,7 @@
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UITiledSprite.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UITooltip.cs" />
      <Compile Include="Assets\NGUI270Revive\Scripts\UI\UIViewport.cs" />
-     <Compile Include="Assets\Scripts\BallController.cs" />
-     <Compile Include="Assets\Scripts\BinaryNumberController.cs" />
+     <Compile Include="Assets\Scripts\CreditsController.cs" />
      <Compile Include="Assets\Scripts\FirstScene\FirstSceneController.cs" />
      <Compile Include="Assets\Scripts\FirstScene\GameDataController.cs" />
      <Compile Include="Assets\Scripts\LevelsSelectorController.cs" />
@@ -190,8 +189,11 @@
      <Compile Include="Assets\Scripts\MainGame\TowerDefenseController.cs" />
      <Compile Include="Assets\Scripts\MainGame\WaveManager.cs" />
      <Compile Include="Assets\Scripts\MainMenuController.cs" />
-     <Compile Include="Assets\Scripts\MiniGameAbacusController.cs" />
-     <Compile Include="Assets\Scripts\MiniGameBinaryController.cs" />
+     <Compile Include="Assets\Scripts\MiniGame\BallController.cs" />
+     <Compile Include="Assets\Scripts\MiniGame\BinaryNumberController.cs" />
+     <Compile Include="Assets\Scripts\MiniGame\MiniGameAbacusController.cs" />
+     <Compile Include="Assets\Scripts\MiniGame\MiniGameBinaryController.cs" />
+     <Compile Include="Assets\Scripts\MiniGame\StoryController.cs" />
      <Compile Include="Assets\Scripts\OptionsController.cs" />
      <Compile Include="Assets\Scripts\PlayerPrefsX.cs" />
      <Compile Include="Assets\Scripts\ProjectileBinaryController.cs" />
@@ -199,7 +201,6 @@
      <Compile Include="Assets\Scripts\SouthPointingChariotMinigameController.cs" />
      <Compile Include="Assets\Scripts\SplashScreenController.cs" />
      <Compile Include="Assets\Scripts\StaticTexts.cs" />
-     <Compile Include="Assets\Scripts\StoryController.cs" />
      <Compile Include="Assets\Scripts\Upgrade\UpgradeController.cs" />
      <None Include="Assets\NGUI270Revive\Resources\Shaders\Unlit - Depth Cutout.shader" />
      <None Include="Assets\NGUI270Revive\Examples\Models\Orc\Orc Skin.shader" />

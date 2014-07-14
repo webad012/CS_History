@@ -21,6 +21,7 @@ public class FirstSceneController : MonoBehaviour
      */
 
     public UILabel statusLabel;
+    public UILabel versionLabel;
     public GameObject statusButton;
     public GameObject updateButton;
     public GameObject goOnlineButton;
@@ -35,12 +36,14 @@ public class FirstSceneController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
+        gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
+        gameDataControllerScript.PlayBackgroundMusic(gameDataControllerScript.sounds.backgroundMenu);
+
         updateButton.SetActive(false);
         goOnlineButton.SetActive(false);
-        //statusButton.GetComponent<UIButton>().isEnabled = false;
-        gameDataControllerScript = GameObject.FindGameObjectWithTag("GameDataController").GetComponent<GameDataController>();
 
         statusLabel.text = "Game initializing...";
+        versionLabel.text = "v" + currentVersion.ToString();
 
         if (Application.isWebPlayer)
         {
@@ -64,7 +67,6 @@ public class FirstSceneController : MonoBehaviour
                 if (gameDataControllerScript.canContinue)
                 {
                     statusLabel.text = "There was connection problem,\nbut you may play offline.\nSelect here to continue.";
-                    //statusButton.GetComponent<UIButton>().isEnabled = true;
                     goOnlineButton.SetActive(true);
                 }
             }
@@ -75,7 +77,6 @@ public class FirstSceneController : MonoBehaviour
                     if (gameDataControllerScript.canContinue)
                     {
                         statusLabel.text = "Version obsolete, please download latest version,\nbut you may play offline.\nSelect here to continue.";
-                        //statusButton.GetComponent<UIButton>().isEnabled = true;
                         updateButton.SetActive(true);
                     }
                 }
@@ -84,7 +85,6 @@ public class FirstSceneController : MonoBehaviour
                     if (gameDataControllerScript.canContinue)
                     {
                         statusLabel.text = "Game initialzied.\nSelect here to continue.";
-                        //statusButton.GetComponent<UIButton>().isEnabled = true;
                     }
                 }
             }

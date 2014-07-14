@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class SetTower : MonoBehaviour 
 {
-    public int selectedTowerIndex = 0;
+    private int selectedTowerIndex = -1;
     public GameObject tile;
 
     public GameObject buildPanel;
@@ -133,57 +133,61 @@ public class SetTower : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 1000, placementLayerMask))
+        if (Time.timeScale != 0 && selectedTowerIndex >= 0)
         {
-            if (hit.transform.tag == "Tile")
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 1000, placementLayerMask))
             {
-                tile = hit.transform.gameObject;
+                if (hit.transform.tag == "Tile")
+                {
+                    tile = hit.transform.gameObject;
+                } else
+                {
+                    tile = null;
+                }
             } else
             {
-                tile = null;
+                if (tile)
+                {
+                    tile = null;
+                }
             }
-        } 
-        else
-        {
-            if(tile)
-            {
-                tile = null;
-            }
-        }
 
-        if (Input.GetMouseButtonDown(0) && tile != null)
-        {
-            TileTaken tileTakenScript = tile.GetComponent<TileTaken>();
-
-            int playerCoins = PlayerPrefs.GetInt("PlayerCoins", 0);
-            if(!tileTakenScript.isTaken 
-               && playerCoins >= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price)
+            if (Input.GetMouseButtonDown(0) && tile != null)
             {
-                playerCoins -= gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.price;
-                PlayerPrefs.SetInt("PlayerCoins", playerCoins);
-                Vector3 pos = new Vector3(tile.transform.position.x, 0.8f, tile.transform.position.z);
-                GameObject newTower = (GameObject)Instantiate(gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.towerPrefab, 
+                TileTaken tileTakenScript = tile.GetComponent<TileTaken>();
+
+                int playerCoins = PlayerPrefs.GetInt("PlayerCoins", 0);
+                if (!tileTakenScript.isTaken 
+                    && playerCoins >= gameDataControllerScript.towersData [selectedTowerIndex].mainGameData.price)
+                {
+                    playerCoins -= gameDataControllerScript.towersData [selectedTowerIndex].mainGameData.price;
+                    PlayerPrefs.SetInt("PlayerCoins", playerCoins);
+                    Vector3 pos = new Vector3(tile.transform.position.x, 0.8f, tile.transform.position.z);
+                    GameObject newTower = (GameObject)Instantiate(gameDataControllerScript.towersData [selectedTowerIndex].mainGameData.towerPrefab, 
                                                               pos, 
                                                               Quaternion.identity);
-                newTower.gameObject.GetComponent<Health>().startingHealth = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetHealth();
-                //Debug.Log("0 - " + newTower.gameObject.GetComponent<Health>().actualHealth.ToString());
-                newTower.gameObject.GetComponent<Shoot>().cooldown = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetShootCooldown();
-                newTower.gameObject.GetComponent<Shoot>().projectilePrefab = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.projectilePrefab;
-                newTower.gameObject.GetComponent<Shoot>().damage = gameDataControllerScript.towersData[selectedTowerIndex].mainGameData.stats.GetDamage();
-                newTower.name = "Tower_" + towerCount.ToString();
-                towerCount++;
-                tileTakenScript.tower = newTower;
-                tileTakenScript.isTaken = true;
+                    newTower.gameObject.GetComponent<Health>().startingHealth = gameDataControllerScript.towersData [selectedTowerIndex].mainGameData.stats.GetHealth();
+                    newTower.gameObject.GetComponent<Shoot>().cooldown = gameDataControllerScript.towersData [selectedTowerIndex].mainGameData.stats.GetShootCooldown();
+                    newTower.gameObject.GetComponent<Shoot>().projectilePrefab = gameDataControllerScript.towersData [selectedTowerIndex].mainGameData.projectilePrefab;
+                    newTower.gameObject.GetComponent<Shoot>().damage = gameDataControllerScript.towersData [selectedTowerIndex].mainGameData.stats.GetDamage();
+                    newTower.name = "Tower_" + towerCount.ToString();
+                    towerCount++;
+                    tileTakenScript.tower = newTower;
+                    tileTakenScript.isTaken = true;
+
+                    selectedTowerIndex = -1;
+                }
             }
         }
 
-        UpdateGUI ();
+        UpdateGUI();
 	}
 
     void ToggleBuildPanel()
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         bool param;
         if (buildPanelOpen) 
         {
@@ -203,6 +207,7 @@ public class SetTower : MonoBehaviour
 
     void SetBuildChoice(GameObject btnObj)
     {
+        gameDataControllerScript.PlayAudioClip(gameDataControllerScript.sounds.menuClick);
         string btnName = btnObj.name;
 
         for (int i=0; i<towerBuildButtons.Count; i++)
@@ -223,9 +228,11 @@ public class SetTower : MonoBehaviour
         {
             towerBuildButtons [i].transform.Find("Background").gameObject.GetComponent<UISprite>().color = offColor;
         }
-        
-        towerBuildButtons [selectedTowerIndex].transform.Find("Background").gameObject.GetComponent<UISprite>().color = onColor;
-        //turrets [structureIndex].costText.text = "$" + turrets [structureIndex].cost;
+
+        if (selectedTowerIndex >= 0)
+        {
+            towerBuildButtons [selectedTowerIndex].transform.Find("Background").gameObject.GetComponent<UISprite>().color = onColor;
+        }
 
         CheckTowersCosts ();
     }
@@ -236,14 +243,11 @@ public class SetTower : MonoBehaviour
         {
             if(gameDataControllerScript.towersData[i].mainGameData.price > PlayerPrefs.GetInt("PlayerCoins", 0))
             {
-                //turrets[i].costText.color = Color.red;
                 towerBuildButtons [i].transform.Find("Background").gameObject.GetComponent<UISprite>().color = grayColor;
                 towerBuildButtons[i].collider.enabled = false;
             }
             else
             {
-                //turrets[i].costText.color = Color.green;
-                
                 if(selectedTowerIndex == i)
                 {
                     towerBuildButtons [i].transform.Find("Background").gameObject.GetComponent<UISprite>().color = onColor;
